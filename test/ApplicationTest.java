@@ -15,19 +15,19 @@ import play.twirl.api.Content;
  */
 public class ApplicationTest {
 
-	@SuppressWarnings("javadoc")
-	@Test
-	public void simpleCheck() {
-		int a = 1 + 1;
-		assertEquals(2, a);
-	}
+    @SuppressWarnings("javadoc")
+    @Test
+    public void simpleCheck() {
+	int a = 1 + 1;
+	assertEquals(2, a);
+    }
 
-	@SuppressWarnings({ "javadoc", "deprecation" })
-	@Test
-	public void renderTemplate() {
-		Content html = views.html.index.render("");
-		assertEquals("text/html", contentType(html));
-		assertTrue(contentAsString(html).contains(""));
-	}
+    @SuppressWarnings({ "javadoc", "deprecation" })
+    @Test
+    public void renderTemplate() {
+	Content html = views.html.index.render("");
+	assertEquals("text/html", contentType(html));
+	assertTrue(contentAsString(html).contains(""));
+    }
 
 }

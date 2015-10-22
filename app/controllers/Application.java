@@ -31,32 +31,34 @@ import play.mvc.Result;
  */
 public class Application extends Controller {
 
-	/**
-	 * Die Web Seit wird als "tmp.html" lokal abgespeichert, in Ebook
-	 * konvertiert und im HTML Header geschrieben.
-	 * 
-	 * @param url
-	 *            die Abosolute URL
-	 * 
-	 * @return File Objekt als epub
-	 */
-	public Result index(String url) {
-		try {
-			if (url != null) {
-				WebDownloader dwnl = new WebDownloader(url);
-				File dir = dwnl.download("tmp.html");
-				EbookConverter conv = new EbookConverter(dir.getAbsolutePath());
-				DateFormat dfmt = new SimpleDateFormat("yyyyMMddhhmmss");
-				File result = conv.convert("/tmp/rauls.epub");
-				response().setHeader("Content-Disposition",
-						"inline; filename=\"" + dfmt.format(new Date()) + "ebook.epub");
-				response().setHeader("Content-Type", "ebook/epub");
-				return ok(result);
-			}
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-		return ok(views.html.index.render(""));
+    /**
+     * Die Web Seit wird als "tmp.html" lokal abgespeichert, in Ebook
+     * konvertiert und im HTML Header geschrieben.
+     * 
+     * @param url
+     *            die Abosolute URL
+     * 
+     * @return File Objekt als epub
+     */
+    public Result index(String url) {
+	try {
+	    if (url != null) {
+		WebDownloader dwnl = new WebDownloader(url);
+		File dir = dwnl.download("tmp.html");
+		EbookConverter conv = new EbookConverter(dir.getAbsolutePath());
+		DateFormat dfmt = new SimpleDateFormat("yyyyMMddhhmmss");
+		File result = conv.convert("/tmp/rauls.epub");
+		response().setHeader(
+			"Content-Disposition",
+			"inline; filename=\"" + dfmt.format(new Date())
+				+ "ebook.epub");
+		response().setHeader("Content-Type", "ebook/epub");
+		return ok(result);
+	    }
+	} catch (Exception e) {
+	    throw new RuntimeException(e);
 	}
+	return ok(views.html.index.render(""));
+    }
 
 }
