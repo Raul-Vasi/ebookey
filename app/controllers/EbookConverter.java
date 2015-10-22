@@ -89,11 +89,10 @@ public class EbookConverter {
 
     // --------------------------------------------------------------------------------------------------------------------
     void addResource(File file) {
-	try {
-	    InputStream input = new FileInputStream(file);
+	try (InputStream input = new FileInputStream(file)) {
 	    Path base = Paths.get(source);
-	    String filePathName = base.relativize(
-		    Paths.get(file.getAbsolutePath())).toString();
+	    String filePathName = base
+		    .relativize(Paths.get(file.getAbsolutePath())).toString();
 	    book.addResource(new Resource(input, filePathName));
 	} catch (Exception e) {
 	    throw new RuntimeException(e);
@@ -102,8 +101,7 @@ public class EbookConverter {
 
     // --------------------------------------------------------------------------------------------------------------------
     void addChapter(File file) {
-	try {
-	    InputStream in = new FileInputStream(file);
+	try (InputStream in = new FileInputStream(file)) {
 	    String filePathName = "chapter1.html";
 	    book.getMetadata().addTitle("Test");
 	    book.addSection("Chapter 1", new Resource(in, filePathName));

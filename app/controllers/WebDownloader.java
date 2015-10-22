@@ -63,8 +63,10 @@ public class WebDownloader {
      * 
      * @param filename
      * @return downloadLocation
+     * @throws IOException
      */
-    public File download(String filename) {
+    public File download(String filename) throws IOException {
+
 	try {
 	    readprop();
 
@@ -72,31 +74,35 @@ public class WebDownloader {
 	    Document doc = Jsoup.connect(url).get();
 	    Elements img = doc.getElementsByTag("img");
 
-	    ByteArrayInputStream bs = new ByteArrayInputStream(doc.outerHtml()
-		    .getBytes("UTF-8"));
+	    try (ByteArrayInputStream bs = new ByteArrayInputStream(doc.outerHtml().getBytes("UTF-8"))) {
 
-	    if (filename.endsWith(".html")) {
-		IOUtil.copy(bs, new FileOutputStream(new File(downloadLocation
-			+ File.separator + filename)));
-	    } else {
-		IOUtil.copy(bs, new FileOutputStream(new File(downloadLocation
-			+ File.separator + filename + ".html")));
-	    }
+		if (filename.endsWith(".html")) {
+		    IOUtil.copy(bs, new FileOutputStream(new File(downloadLocation + File.separator + filename)));
+		} else {
+		    IOUtil.copy(bs,
+			    new FileOutputStream(new File(downloadLocation + File.separator + filename + ".html")));
+		}
 
-	    for (Element element : img) {
-		String src = element.absUrl("src");
-		Response resultImageResponse = Jsoup.connect(src)
-			.ignoreContentType(true).execute();
-		File file = new File(downloadLocation + "/"
-			+ element.attr("src"));
-		Files.createDirectories(Paths.get(file.getParent()));
-		FileOutputStream fileOutStram = (new FileOutputStream(file));
-		fileOutStram.write(resultImageResponse.bodyAsBytes());
-		fileOutStram.close();
+		for (Element element : img) {
+		    String src = element.absUrl("src");
+		    Response resultImageResponse = Jsoup.connect(src).ignoreContentType(true).execute();
+		    File file = new File(downloadLocation + "/" + element.attr("src"));
+		    Files.createDirectories(Paths.get(file.getParent()));
+		    saveAsFile(resultImageResponse, file);
+		}
 	    }
 	    return new File(downloadLocation);
 	} catch (Exception e1) {
 	    throw new RuntimeException(e1);
+	}
+    }
+
+    private void saveAsFile(Response resultImageResponse, File file) {
+	try (FileOutputStream fileOutStream = new FileOutputStream(file)) {
+	    fileOutStream.write(resultImageResponse.bodyAsBytes());
+	    fileOutStream.close();
+	} catch (Exception e) {
+	    throw new RuntimeException(e);
 	}
     }
 
@@ -115,11 +121,9 @@ public class WebDownloader {
 
     }
 
-    private String createDownloadLocation(String outputpath)
-	    throws MalformedURLException, IOException {
+    private String createDownloadLocation(String outputpath) throws MalformedURLException, IOException {
 	URL myUrl = new URL(url);
-	String finalDownloadLocation = outputpath + File.separator
-		+ myUrl.getHost();
+	String finalDownloadLocation = outputpath + File.separator + myUrl.getHost();
 	Files.createDirectories(Paths.get(finalDownloadLocation));
 	return finalDownloadLocation;
     }
