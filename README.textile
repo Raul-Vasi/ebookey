@@ -1,6 +1,6 @@
 h1. ebookey
 
-A thumbnail generator as web service.
+A HTML to ebook converter as web service.
 
 Supports
 - url 
