@@ -1,4 +1,4 @@
-h1. thumby 
+h1. ebookey
 
 A thumbnail generator as web service.
 
