@@ -38,12 +38,12 @@ that's all! Repeating requests will be answered with a cached version using 'url
 h1. Install on Ubuntu
 
 bc.. 
-cd /tmp/thumby
+cd /tmp/ebookey
 /opt/activator-1.3.2-minimal/activator dist
-cp target/universal/ebookey-0.1.0-SNAPSHOT.zip  /tmp
+cp target/universal/ebookey-1.0-SNAPSHOT.zip  /tmp
 cd /tmp
-unzip ebookey-0.1.0-SNAPSHOT.zip
-mv ebookey-0.1.0-SNAPSHOT /opt/ebookey
+unzip ebookey-1.0-SNAPSHOT.zip
+mv ebookey-1.0-SNAPSHOT /opt/ebookey
 
 p. edit startscript
 
@@ -58,7 +58,7 @@ HOME="/opt/ebookey"
 USER="user to run ebookey"
 GROUP="user to run ebookey"
 SECRET=`uuidgen` # generate a secret e.g. using uuidgen
-PORT=9000
+PORT=9003
 
 p. include into system start and shutdown
 
@@ -78,11 +78,11 @@ cd /tmp/ebookey
 /opt/activator-1.3.2-minimal/activator dist
 cp target/universal/ebookey-0.1.0-SNAPSHOT.zip  /tmp
 cd /tmp
-unzip ebookey-0.1.0-SNAPSHOT.zip
-cp /opt/ebookey/conf/application.conf /tmp/ebookey-0.1.0-SNAPSHOT/conf
+unzip ebookey-1.0-SNAPSHOT.zip
+cp /opt/ebookey/conf/application.conf /tmp/ebookey-1.0-SNAPSHOT/conf
 sudo service ebookey stop
 rm -rf /opt/ebookey/*
-mv /tmp/ebookey-0.1.0-SNAPSHOT/* /opt/ebookey/
+mv /tmp/ebookey-1.0-SNAPSHOT/* /opt/ebookey/
 sudo service ebookey start
 
 h1. License
