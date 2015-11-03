@@ -37,28 +37,33 @@ public class Application extends Controller {
      * 
      * @param url
      *            die Abosolute URL
+     * @param metadataUrl
      * 
      * @return File Objekt als epub
      */
-    public Result index(String url) {
+    public Result index(String url, String metadataUrl) {
 	try {
 	    if (url != null) {
 		WebDownloader dwnl = new WebDownloader(url);
+		dwnl.defineSubDirectory(getNanoTime());
 		File dir = dwnl.download("tmp.html");
-		EbookConverter conv = new EbookConverter(dir.getAbsolutePath());
+		EbookConverter conv = new EbookConverter(dir.getAbsolutePath(), new ModsParser(metadataUrl));
 		DateFormat dfmt = new SimpleDateFormat("yyyyMMddhhmmss");
-		File result = conv.convert("/tmp/rauls.epub");
-		response().setHeader(
-			"Content-Disposition",
-			"inline; filename=\"" + dfmt.format(new Date())
-				+ "ebook.epub");
+		File result = conv.convert(dir + "/rauls.epub");
+		response().setHeader("Content-Disposition",
+			"inline; filename=\"" + dfmt.format(new Date()) + "ebook.epub");
 		response().setHeader("Content-Type", "ebook/epub");
+
 		return ok(result);
 	    }
 	} catch (Exception e) {
 	    throw new RuntimeException(e);
 	}
 	return ok(views.html.index.render(""));
+    }
+
+    synchronized private long getNanoTime() {
+	return System.nanoTime();
     }
 
 }

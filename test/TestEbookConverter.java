@@ -4,12 +4,16 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import controllers.EbookConverter;
+import controllers.ModsParser;
 import controllers.WebDownloader;
 import nl.siegmann.epublib.domain.Book;
 import nl.siegmann.epublib.epub.EpubReader;
@@ -43,7 +47,7 @@ public class TestEbookConverter {
 	String inputDirectory = Thread.currentThread().getContextClassLoader().getResource("epub").getPath();
 	EbookConverter conv = new EbookConverter(inputDirectory);
 	File result = conv.convert("/tmp/rauls.epub");
-	result.deleteOnExit();
+	// result.deleteOnExit();
 	Assert.assertEquals(true, result.exists());
     }
 
@@ -105,12 +109,16 @@ public class TestEbookConverter {
 
     @Test
     public void testAll() throws FileNotFoundException, IOException {
-	WebDownloader dwnl = new WebDownloader("http://www.tutorialspoint.com/java/java_string_substring.htm");
+	WebDownloader dwnl = new WebDownloader(
+		"https://alkyoneus.hbz-nrw.de/dev/jahrgang-2015/ausgabe-1/2295/#fulltext");
+	dwnl.defineSubDirectory(System.nanoTime());
 	File dir = dwnl.download("tmp.html");
-	dir.deleteOnExit();
+	System.out.println(dir.getAbsolutePath());
+	// dir.deleteOnExit();
 	EbookConverter conv = new EbookConverter(dir.getAbsolutePath());
-	File result = conv.convert(File.createTempFile("ebook", ".epub").getAbsolutePath());
-	result.deleteOnExit();
+
+	File result = conv.convert(dir + "/rauls.epub");
+	// result.deleteOnExit();
 	Assert.assertEquals(true, result.exists());
 	Assert.assertEquals(true, dir.exists());
 	System.out.println(result.toString());
@@ -130,6 +138,125 @@ public class TestEbookConverter {
 	System.out.println(properties.getProperty("fedoraUrl"));
 	System.out.println(Play.application().getFile("").getAbsolutePath());
 
+    }
+
+    @SuppressWarnings("unused")
+    @Test
+    public void testThreads() throws IOException, InterruptedException {
+	Thread t1 = new Thread() {
+	    public void run() {
+		try {
+		    WebDownloader dwnl = new WebDownloader(
+			    "http://www.tutorialspoint.com/java/java_string_substring.htm");
+		    File dir = dwnl.download("tmp.html");
+		} catch (Exception e) {
+		    e.printStackTrace();
+		}
+	    }
+	};
+	Thread t2 = new Thread() {
+	    public void run() {
+		try {
+		    WebDownloader dwnl = new WebDownloader(
+			    "http://www.tutorialspoint.com/java/java_string_substring.htm");
+		    File dir = dwnl.download("tmp.html");
+		} catch (Exception e) {
+		    e.printStackTrace();
+		}
+	    }
+	};
+	Thread t3 = new Thread() {
+	    public void run() {
+		try {
+		    WebDownloader dwnl = new WebDownloader(
+			    "http://www.tutorialspoint.com/java/java_string_substring.htm");
+		    File dir = dwnl.download("tmp.html");
+		} catch (Exception e) {
+		    e.printStackTrace();
+		}
+	    }
+	};
+	Thread t4 = new Thread() {
+	    public void run() {
+		try {
+		    WebDownloader dwnl = new WebDownloader(
+			    "http://www.tutorialspoint.com/java/java_string_substring.htm");
+		    File dir = dwnl.download("tmp.html");
+		} catch (Exception e) {
+		    e.printStackTrace();
+		}
+	    }
+	};
+	Thread t5 = new Thread() {
+	    public void run() {
+		try {
+		    WebDownloader dwnl = new WebDownloader(
+			    "http://www.tutorialspoint.com/java/java_string_substring.htm");
+		    File dir = dwnl.download("tmp.html");
+		} catch (Exception e) {
+		    e.printStackTrace();
+		}
+	    }
+	};
+	Thread t6 = new Thread() {
+	    public void run() {
+		try {
+		    WebDownloader dwnl = new WebDownloader(
+			    "http://www.tutorialspoint.com/java/java_string_substring.htm");
+		    File dir = dwnl.download("tmp.html");
+		} catch (Exception e) {
+		    e.printStackTrace();
+		}
+	    }
+	};
+
+	t1.start();
+	t2.start();
+	t3.start();
+	t4.start();
+	t5.start();
+	t6.start();
+
+    }
+
+    @Test
+    public void extractMetasTest() throws IOException {
+	@SuppressWarnings("unused")
+	String url = "https://alkyoneus.hbz-nrw.de/dev/jahrgang-2015/ausgabe-1/2295/#fulltext";
+	// Document doc = Jsoup.connect(url).get();
+	// Elements links = doc.select("[href]");
+	// for (Element link : links) {
+	// String l = link.attr("abs:href");
+	// if (l.endsWith("metadata")) {
+	// System.out.println(">>>>>>>>>>>>>>>>" + l);
+	//
+	// }
+	// }
+
+	Document doc = Jsoup.connect("https://alkyoneus.hbz-nrw.de/dev/jahrgang-2015/ausgabe-1/2295/metadata/xml")
+		.get();
+
+	// String ldoc = doc.select("pre:contains(Mods)").text();
+	// doc = Jsoup.parse(ldoc);
+
+	// Schleife über alle Names
+	for (Element e : doc.getElementsByTag("name")) {
+	    String vorname = e.select("namepart[type=given] ").text();
+	    vorname += ", " + e.select("namepart[type=family] ").text();
+	    System.out.println(vorname);
+	}
+
+    }
+
+    @Test
+    public void getMetasTest() {
+	String inputDirectory = Thread.currentThread().getContextClassLoader().getResource("epub").getPath();
+	System.out.println(inputDirectory);
+	EbookConverter conv = new EbookConverter(inputDirectory,
+		new ModsParser("https://alkyoneus.hbz-nrw.de/dev/jahrgang-2015/ausgabe-1/2295/metadata/xml"));
+
+	File result = conv.convert("/tmp/rauls.epub");
+	Assert.assertEquals(true, result.exists());
     }
 
 }

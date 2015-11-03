@@ -97,6 +97,15 @@ public class WebDownloader {
 	}
     }
 
+    /**
+     * @param path
+     * @return ein Unterordern der denn Nanozeitwert als Name hat.
+     */
+    public String defineSubDirectory(Long path) {
+	outputpath += path;
+	return outputpath;
+    }
+
     private void saveAsFile(Response resultImageResponse, File file) {
 	try (FileOutputStream fileOutStream = new FileOutputStream(file)) {
 	    fileOutStream.write(resultImageResponse.bodyAsBytes());

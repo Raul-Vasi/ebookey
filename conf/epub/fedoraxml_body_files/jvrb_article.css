@@ -1,0 +1,40 @@
+/*  (do not remove this :) */
+/*  (not this either :) */
+/* styles for the mixed_view template */
+
+/* tooltips */
+
+
+/* styles for names */
+.article .surname:after{content:", "}
+
+/* general */
+
+.article .pagenums:after{content:", "}
+.article .issuenum:before{content:"no. "}
+.article .issuenum:after{content:", "}
+.article .publishername:after{content:", "}
+.article .address:after{content:", "}
+.article .pubdate:after{content:", "}
+.article .bibliomisc + .pagenums:before{content:"pp. "}
+.article .it {font-style:italic;}
+
+/* styles for journal-references*/
+.article .volumenum{font-weight:bold}
+.article .volumenum + .pubdate:before{content:"("}
+.article .volumenum + .pubdate:after{content:"), "}
+
+/* ISSN/ISBN */
+.article .issn{font-variant:small-caps; content}
+.article .issn:after{content:"."}
+.article .issn:before{content:"issn "; font-variant:small-caps}
+
+.article .isbn{font-variant:small-caps; content}
+.article .isbn:after{content:"."}
+.article .isbn:before{content:"isbn "; font-variant:small-caps}
+
+
+/* styles for titles*/
+.article .bibliomset em:after{content:", "}
+
+/*  */

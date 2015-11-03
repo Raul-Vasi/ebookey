@@ -23,7 +23,8 @@ public class IntegrationTest {
     public void test() {
 	running(testServer(3333, fakeApplication(inMemoryDatabase())), HTMLUNIT, new Callback<TestBrowser>() {
 	    public void invoke(TestBrowser browser) {
-		browser.goTo("http://localhost:9000/?url=http://www.tutorialspoint.com/java/java_string_substring.htm");
+		browser.goTo(
+			"http://localhost:9000/tools/ebookey/?url=http://www.tutorialspoint.com/java/java_string_substring.htm");
 
 	    }
 	});

@@ -1,0 +1,3433 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-15"><link rel="stylesheet" type="text/css" href="fedoraxml_body_files/jvrb_article.css">
+</head><body><div class="article" lang="en">
+   <div class="titlepage">
+      <div class="articleinfo">
+         <h2 class="title">
+            <a id="d57e1" shape="rect"></a>Simulating Wind and Warmth in Virtual Reality: Conception,
+		Realization and Evaluation for a CAVE Environment</h2>
+         <div class="authorinfo">
+            <p>Felix Hülsmann, Nikita Mattar, Julia Fröhlich , Ipke Wachsmuth
+                        AI &amp; VR Lab, Faculty of Technology
+                                Bielefeld University
+                      Universitätsstraße 25, Bielefeld, Germany
+email:  fhuelsma,  nmattar,  jfroehli,  ipke@techfak.uni-bielefeld.de
+            www: <a class="ulink" href="http://www.techfak.uni-bielefeld.de/ags/wbski/" target="_top" shape="rect">www.techfak.uni-bielefeld.de/ags/wbski/</a>
+                                          </p>
+         </div>
+         <div class="biblioid">
+            <p>urn:nbn:de:0009-6-40759</p>
+         </div>
+         <div class="abstract">
+            <p class="title">
+               <strong>Abstract</strong>
+            </p>
+            <p>
+Wind and warmth sensations proved to be
+able to enhance users' state of presence in Virtual
+Reality applications. Still, only few projects deal with
+their detailed effect on the user and general ways of
+implementing such stimuli. This work tries to fill this
+gap: After analyzing requirements for hardware and
+software concerning wind and warmth simulations, a
+hardware and also a software setup for the application in a
+CAVE environment is proposed. The setup is evaluated
+with regard to technical details and requirements, but
+also - in the form of a pilot study - in view of user
+experience and presence. Our setup proved to comply with
+the requirements and leads to satisfactory results.
+To our knowledge, the low cost simulation system
+(approx. 2200 Euro) presented here is one of the most
+extensive, most flexible and best evaluated systems for
+creating wind and warmth stimuli in CAVE-based VR
+applications.                                     </p>
+         </div>
+         <div class="keywords">
+            <p>Keywords: <span class="keyword">multisensory stimuli, wind simulation, warmth simulation, presence, virtual reality</span>
+            </p>
+         </div>
+         <div class="keywords">
+            <p>Keywords: <span class="keyword">multisensory stimuli, wind simulation, warmth simulation, presence, virtual reality</span>
+            </p>
+         </div>
+         <div class="subjects">
+            <p>: <span class="subject">
+            </span></p>
+         </div>
+      </div>
+   </div>
+   <div class="section" lang="en">
+      <div class="titlepage">
+         <h2 class="title" style="clear: both">
+            <a id="d57e92" shape="rect"></a>1.&nbsp;
+      <a id="x1-40001" shape="rect"></a>Introduction</h2>
+      </div>
+      <p>Enhancing presence is one of the most important topics
+  in Virtual Reality research. Recent work shows that a high
+  level of presence can be achieved, for example by a
+  reasonable combination of feedback modalities [<span class="citation">
+            <a class="xref" href="#XVisualAuditoryHaptic" title="FW13" shape="rect">FW13</a>
+         </span>].
+  Due to technical advancement, virtual worlds have already
+  become more and more immersive. In this area, especially
+  concerning rendering techniques and spatial sound,
+  many advances have been made. But how can further
+  natural sensations, e.g. airflow during navigation
+  tasks, heat of a fire in a rescue scenario [<span class="citation">
+            <a class="xref" href="#XVRARNachfrage" title="MKB13" shape="rect">MKB13</a>
+         </span>]
+  or simply the warmth inside a simulated desert be
+  made perceivable in virtual environments? A common
+                                                                                            
+
+                                                                                            
+type of VR applications consists of navigation tasks
+which - in reality - include stimuli like airflow or
+changes in temperature. Hence we suppose that an
+extension of VR setups with wind and warmth will
+improve users' state of presence. The hypothesis of
+improved presence through multisensory stimuli is
+supported by empirical work that shows the ability of
+these modalities to do so (e.g. [<span class="citation">
+            <a class="xref" href="#Xdinh1999evaluating" title="DNH99" shape="rect">DNH99</a>
+         </span>], [<span class="citation">
+            <a class="xref" href="#Xcardin" title="CTV07" shape="rect">CTV07</a>
+         </span>],
+[<span class="citation">
+            <a class="xref" href="#XVisualAuditoryHaptic" title="FW13" shape="rect">FW13</a>
+         </span>]), although the visual sense is the most dominant
+sense for humans (rods and cones inside the human
+eye represent 70 percent of all human sensory cells
+[<span class="citation">
+            <a class="xref" href="#XCampbell" title="CRT09" shape="rect">CRT09</a>
+         </span>]).</p>
+      <p>Only little work has been published in this field. There
+is no standardized hardware nor well grounded concepts
+for creating wind and warmth sensations and embedding
+them in VR environments. Furthermore, experimental
+results concerning the perception of wind and warmth
+sensations in VR setups are rare.
+This paper is an extension of the work first presented in
+[<span class="citation">
+            <a class="xref" href="#XHuelsmann2013" title="HMFW13" shape="rect">HMFW13</a>
+         </span>]. The concepts described in that paper are
+summarized and extended by a detailed hardware and
+software description followed by an extensive technical
+evaluation. The steps conducted on the way toward a wind
+and warmth simulator are the following:</p>
+      <div class="itemizedlist">
+         <ul type="disc">
+            <li>
+               <p>
+
+  Identification  of  requirements  concerning  wind
+  and  warmth  simulations  in  VR  systems  which
+  are   independent   from   the   applied   VR   setup
+  (e.g. CAVE vs. HMD)
+</p>
+            </li>
+            <li>
+               <p>
+
+  Discussion  of  possible  hardware  and  selection
+  of  the  most  suitable  system  for  the  available
+  environment (three-sided CAVE)
+</p>
+            </li>
+            <li>
+               <p>
+
+  Conception of an abstract model which embeds
+  wind and warmth in existing VR environments
+</p>
+            </li>
+            <li>
+               <p>
+
+  Implementation of the software model and of the
+  hardware components in a suitable and efficient
+  way,  keeping  as  much  independence  of  precise
+  hardware and software environments as possible
+</p>
+            </li>
+            <li>
+               <p>
+
+          Technical evaluation of the setup
+</p>
+            </li>
+            <li>
+               <p>
+
+          Pilot    studies    gaining    information    on    user
+          experience and presence
+</p>
+            </li>
+         </ul>
+      </div>
+      <p>The paper is organized as follows: The <a class="ulink" href="#x1-50002" target="_top" shape="rect">second</a> section
+  gives an overview of related work, dealing with wind and
+  warmth simulations in VR and their perception in humans.
+  The <a class="ulink" href="#x1-80003" target="_top" shape="rect">third</a> section gives details of requirements on hardware
+  components and on the software implementation.
+  Afterwards a model for representing wind and warmth in
+  VR is given in Section <a class="ulink" href="#x1-110004" target="_top" shape="rect">4</a>. Section <a class="ulink" href="#x1-120005" target="_top" shape="rect">5</a> describes the actual
+  implementation, starting with the hardware installation
+  followed by the software components. An evaluation
+  of the system is presented in Section <a class="ulink" href="#" target="_top" shape="rect">6</a> containing
+  a technical evaluation, and a pilot study analyzing
+  the influence of the simulation on user experience.
+  The last section summarizes the presented system
+  and outlines future work, projecting a more detailed
+  subjective evaluation of the system in terms of user
+  studies.</p>
+   </div>
+   <div class="section" lang="en">
+      <div class="titlepage">
+         <h2 class="title" style="clear: both">
+            <a id="d57e159" shape="rect"></a>2.&nbsp;
+      <a id="x1-50002" shape="rect"></a>State of the Art</h2>
+      </div>
+      <p>As Dinh et al.  [<span class="citation">
+            <a class="xref" href="#Xdinh1999evaluating" title="DNH99" shape="rect">DNH99</a>
+         </span>] have pointed out, the
+  introduction of multiple feedback modalities can enhance
+  the level of presence a user perceives in a VR environment.
+  Many systems have been developed, adding single
+  modalities to a graphics system. These have mostly
+  been auditive (e.g. [<span class="citation">
+            <a class="xref" href="#Xhusung2010modelling" title="HMWK10" shape="rect">HMWK10</a>
+         </span>], [<span class="citation">
+            <a class="xref" href="#Xlarsson2001ecological" title="LVK01" shape="rect">LVK01</a>
+         </span>]) or haptic
+  enrichments (e.g. [<span class="citation">
+            <a class="xref" href="#Xburdea1996force" title="Bur96" shape="rect">Bur96</a>
+         </span>], [<span class="citation">
+            <a class="xref" href="#Xweber2013visual" title="WSHP13" shape="rect">WSHP13</a>
+         </span>]). Some efforts
+  including olfactory stimuli can be found, either using
+  global displays, which fill a whole room with odor, or
+  presenting scents via a wearable device. The main
+  problem using global approaches is the neutralization of
+  the submitted smell. One system minimizing this problem
+  is introduced by Yanagida et al.  [<span class="citation">
+            <a class="xref" href="#XYanagida04" title="YKN04" shape="rect">YKN04</a>
+         </span>]. Wearable
+  devices as presented in [<span class="citation">
+            <a class="xref" href="#XYamada" title="YYT06" shape="rect">YYT06</a>
+         </span>] or [<span class="citation">
+            <a class="xref" href="#XHirotaHCII13" title="HIAI13" shape="rect">HIAI13</a>
+         </span>], have the
+  drawback of being restrictive and are often regarded as
+  being too intrusive. Concerning wind and warmth
+  simulations, some approaches have been presented which
+  will be described in the following.</p>
+      <div class="section" lang="en">
+         <div class="titlepage">
+            <h3 class="title">
+               <a id="d57e191" shape="rect"></a>2.1.&nbsp;
+<a id="x1-60002.1" shape="rect"></a>Wind Simulation</h3>
+         </div>
+         <p>One example for the integration of
+wind is the VR-Scooter described by Deligiannidis and
+Jacob [<span class="citation">
+               <a class="xref" href="#XvrScooter" title="DJ06" shape="rect">DJ06</a>
+            </span>]. A real scooter is used for navigation inside
+the VR and generates tactile feedback using vibrotactile
+actuators. In addition, a fan provides wind in front of the
+user. The authors detected that perceived wind improves
+both, task performance and subjective user experience.
+The main disadvantage of their system is the inability to
+provide directional wind. Thus the system is only useful in
+a rather narrow scope.</p>
+         <p>Moon and Kim introduced a setup which consists of 20
+fans arranged in three horizontal levels around the
+user [<span class="citation">
+               <a class="xref" href="#Xmoonkim" title="MK04" shape="rect">MK04</a>
+            </span>]. A study showed that users cannot
+distinguish between winds which come from neighboring
+fans, if the angle in between is less than 45 degrees.
+The system presented by Moon and Kim was able to
+significantly enhance presence due to the application of
+wind feedback. However, it was unable to compute
+the wind influence in realtime: The authors used an
+editor to design the wind field manually for each scene
+beforehand.</p>
+         <p>In 2013, Verlinden et al. presented a sail simulator
+which was extended by a wind simulation to increase
+presence [<span class="citation">
+               <a class="xref" href="#Xverlinden2013enhancement" title="VMV13" shape="rect">VMV13</a>
+            </span>]. Eight fans are mounted at a height of
+two meters on top of the floor. All fans are arranged in a
+circle with a diameter of four meters. The user is sitting
+inside a simulator having the outward appearance
+of a real boat. Graphics are projected on a screen in
+front of the user. The system was evaluated with 10
+test subjects. The results showed an improvement of
+immersion when using the wind feedback. Furthermore
+the participants reported that the wind simulation had
+helped them to orient. On the other hand, most of them
+perceived the wind sensations as being too weak. Also, the
+simulation suffered from the sound created by the
+fans.</p>
+         <p>Another approach is presented by Kulkarni et al.
+who used the vortices of an airflow on the
+projection wall to adapt the direction of a presented wind
+up to an accuracy of 1-2 ° degrees [<span class="citation">
+               <a class="xref" href="#Xkulkarni2012design" title="KMD12?" shape="rect">KMD12</a>
+</span>]. However,
+the system can only be used with a certain display
+arrangement and is thus not usable for a CAVE
+environment. Also wind angles are only possible to be
+perceived in the interval [-30 °, 30 °]. Furthermore
+the wind cannot be created in realtime. A delay of 2 to 25 seconds appears when creating certain wind
+directions.</p>
+         <p>In addition to the above mentioned stationary systems,
+  solutions directly mounted on the user's head are presented
+  e.g. by Lehmann et al. [<span class="citation">
+               <a class="xref" href="#Xlehmann" title="LGWS09" shape="rect">LGWS09</a>
+            </span>]. In their approach, a
+  comparison of stationary global and local systems
+  attached to the user was conducted: In a ski simulation,
+  three conditions (no wind, stationary fans, head-mounted
+  fans) were tested in a within-subjects study. The difference
+  between stationary fans and head-mounted fans was not
+  significant, but at least indicated a trend toward a higher
+  level of presence when using the stationary wind sources.
+  Further results showed a significantly higher level of
+  presence when using wind compared to the no-wind
+  condition.</p>
+      </div>
+      <div class="section" lang="en">
+         <div class="titlepage">
+            <h3 class="title">
+               <a id="d57e221" shape="rect"></a>2.2.&nbsp;
+      <a id="x1-70002.2" shape="rect"></a>Warmth Simulation</h3>
+         </div>
+         <p>Concerning the role of warmth in
+  VR, there is only little research. Dionisio published an
+  evaluation of possible hardware devices for temperature
+  sensations in 1996, concluding that fans, infrared lamps
+  and Peltier elements are the best option for VR-centered
+  temperature simulations [<span class="citation">
+               <a class="xref" href="#Xdionisio" title="Dio97a" shape="rect">Dio97a</a>
+            </span>]. An exemplary setup
+  was introduced as a "virtual hell" [<span class="citation">
+               <a class="xref" href="#XVirtualHell" title="Dio97b" shape="rect">Dio97b</a>
+            </span>], with each
+  three fans and infrared lamps arranged around the user,
+  as well as Peltier elements attached directly to the
+  skin.</p>
+         <p>To find thresholds concerning the perception of heat and
+  cold, Gray et al. [<span class="citation">
+               <a class="xref" href="#Xgray" title="GSM82" shape="rect">GSM82</a>
+            </span>] performed a study using Peltier
+  elements as temperature actuator. Thresholds were found
+  at changes of a temperature rise of 1.04 degrees Celsius
+  and a drop of 0.15 degrees Celsius: Interestingly, a
+  negative change in temperature is more easily perceived
+  than a positive change.</p>
+      </div>
+   </div>
+   <div class="section" lang="en">
+      <div class="titlepage">
+         <h2 class="title" style="clear: both">
+            <a id="d57e239" shape="rect"></a>3.&nbsp;
+      <a id="x1-80003" shape="rect"></a>Requirements to Simulate Wind and Warmth in Virtual
+  Reality</h2>
+      </div>
+      <p>As only few projects combine wind and warmth
+  simulations with Virtual Reality setups, a detailed
+  investigation of necessary requirements is mandatory.
+                                                                                            
+
+                                                                                            
+These should be divided into hardware and software
+requirements being independent from each other. This
+assures a maximal extensibility and generality of the
+concepts. Furthermore, the requirements should be
+independent from a specific implementation and also from
+the existing setup (e.g. HMD vs. Cave and standardized
+VR framework vs. self-developed system) in which a
+wind and warmth system is integrated.</p>
+      <div class="section" lang="en">
+         <div class="titlepage">
+            <h3 class="title">
+               <a id="d57e246" shape="rect"></a>3.1.&nbsp;
+<a id="x1-90003.1" shape="rect"></a>Hardware Requirements</h3>
+         </div>
+         <p>A first requirement is that the
+system must be save: Especially when using heat sources,
+neither the user nor the existing system itself must be
+endangered. Therefore, a direct contact between user and
+heat sources must be avoided. For instance the position of
+heat sources mounted on top of the user has to be adapted
+according to the user's height. Temperature limits
+have to be selected carefully, because many hardware
+components, e.g. projectors or the tracking system, are
+heat-sensitive. Thus temperature sensors must be used to
+monitor the overall heat created.</p>
+         <p>Further, the system must be capable of real-time
+interactivity. A low latency toward the user's actions
+(e.g. switching on/off a virtual fan or closing the coverage
+of a virtual chimney) is required to apply the simulation in
+a realistic Virtual Reality.</p>
+         <p>As the user is able to change translation and rotation
+inside the virtual world, the simulation must adapt to the
+transformation of a wind and warmth source continuously.
+Otherwise, a gap between visual feedback and the
+sensations perceived could appear and decrease the user's
+sense of presence [<span class="citation">
+               <a class="xref" href="#XWitmer1998" title="WS98" shape="rect">WS98</a>
+            </span>].</p>
+         <p>If the above mentioned criteria are satisfied, it must
+be ensured that the user's interaction possibilities
+are not limited by new hardware: Some hardware
+solutions (e.g. concerning eyetracking [<span class="citation">
+               <a class="xref" href="#XHuelsmann2011" title="HDP11" shape="rect">HDP11</a>
+            </span>])
+influence the user's behavior due to cables and hardware
+attached directly to the user. Furthermore, the existing
+hardware itself (e.g. projection or tracking) must not be
+affected.</p>
+         <p>The following listing summarizes the proposed
+	hardware requirements arranged by priority:</p>
+         <p>
+	           <span class="bf"><b>HW1</b></span> Do  not  endanger  the  user  or  hardware  by  the
+	setup</p>
+         <p>
+            <span class="bf"><b>HW2</b></span>  Provide real-time and low latency</p>
+         <p>
+            <span class="bf"><b>HW3</b></span>  Allow adaptation of the sensation's direction</p>
+         <p>
+            <span class="bf"><b>HW4</b></span>  Prevent  disturbance  of  existing  hardware  and
+	interaction possibilities</p>
+      </div>
+      <div class="section" lang="en">
+         <div class="titlepage">
+            <h3 class="title">
+               <a id="d57e284" shape="rect"></a>3.2.&nbsp;
+      <a id="x1-100003.2" shape="rect"></a>Software Requirements</h3>
+         </div>
+         <p>Additional to the hardware
+  requirements, the software system must also satisfy
+  certain constraints. First of all, real-time capability must
+  be ensured: A direct reaction to the user's actions is
+  necessary in a Virtual Reality simulation. Otherwise,
+  the gap between visual information and wind and
+  warmth sensations could lead to decreased presence.
+  Altough, a realistic rendering is desirable, a physically
+  modeled simulation for calculating the exact influences
+  of wind and warmth sources would need too much
+  computational power. Also, it is doubtable whether such a
+  realistic simulation is necessary (e.g. for rendering light
+  and sound, simplified models like the Phong lighting
+  model are applied successfully). Therefore, a balance
+  between realism and computational costs has to be
+  found.</p>
+         <p>Inside the simulation, the user should be able to move
+  freely with six degrees of freedom. Therefore, the user
+  must be represented inside the simulation and the software
+  has to be able to adapt the sensation's direction and
+  position according to the user's actions. Furthermore,
+  virtual occlusions must be considered: If a user is placed
+  inside a virtual building or behind a wall, sensing the same
+  sensations as outside would be unnatural and thus disrupt
+  perceived presence inside the scene. The system must
+  react to a changed distance between wind/warmth source
+  and the user. Hence, an appropriate attenuation function
+  has to be found.</p>
+         <p>Wind and warmth sensations appear in different situations
+  and are created by different causations: airstream
+  created by the user's movement, storm belonging to the
+  simulation of a landscape, virtual fans, a fire inside a
+  rescue scenario et cetera. Therefore, an abstract model
+  which forms the basis for simulating a large set of
+  different sensation sources inside a VR framework has to
+  be found. To be able to integrate the system in an
+                                                                                            
+
+                                                                                            
+existing Virtual Reality setup, also appropriate scales
+must be found for quantifying the stimuli: This could
+be for example <em>m / s</em> for wind or degrees Celsius for
+warmth.</p>
+         <p>When using a combination of wind and warmth
+sources, crossmodal influences could appear between
+wind and warmth (as using wind also influences the
+perceived temperature [<span class="citation">
+               <a class="xref" href="#Xdionisio" title="Dio97a" shape="rect">Dio97a</a>
+            </span>]) or wind-blown dispersal
+at the projection walls. Such influences need to be
+analyzed and considered when calculating the input signal
+of the hardware system.</p>
+         <p>Last but not least, the system should be able to use the
+full power of the hardware devices. The following listing
+summarizes the software requirements arranged by
+priority:</p>
+         <p>
+	           <span class="bf"><b>SW1</b></span> Provide  real-time,  low  latency  and  a  balance
+	between realism and computational costs</p>
+         <p>
+            <span class="bf"><b>SW2</b></span> Adapt user's position and orientation inside the
+	virtual world</p>
+         <p>
+            <span class="bf"><b>SW3</b></span> Consider occlusions</p>
+         <p>
+            <span class="bf"><b>SW4</b></span> Use an appropriate attenuation function</p>
+         <p>
+            <span class="bf"><b>SW5</b></span> Provide an abstract model to represent different
+	types of wind and heat sources</p>
+         <p>
+            <span class="bf"><b>SW6</b></span> Provide   appropriate   scales   to   describe   the
+	sensations' intensity</p>
+         <p>
+            <span class="bf"><b>SW7</b></span> Consider crossmodal influences (e.g. influence
+	of wind on warmth perception)</p>
+         <p>
+            <span class="bf"><b>SW8</b></span> Use algorithms able to exploit the full power of
+	the hardware</p>
+      </div>
+   </div>
+   <div class="section" lang="en">
+      <div class="titlepage">
+         <h2 class="title" style="clear: both">
+            <a id="d57e339" shape="rect"></a>4.&nbsp;
+      <a id="x1-110004" shape="rect"></a>A Model for Representing Wind and Warmth in
+  VR</h2>
+      </div>
+      <p>A physically modeled simulation of wind and warmth
+  would be too complex to compute in real-time and with
+  low latency. The model presented here describes an
+  approximation for the application in a VR context. For
+  managing the VR scene, a scene graph is used. Inside the
+  scene graph, each object (e.g. a 3D model) and all further
+  entities (e.g. scripts controlling the application) are
+  represented as so-called nodes. Hence, each wind and
+  warmth source is also represented as a single node.
+  The VR framework sends these nodes and further
+  relevant parts of the scene to a dedicated <span class="it">sensation
+  engine</span>. This engine calculates the influence of the
+  wind and warmth nodes on the scene and activates
+  the hardware components. Figure  <a class="ulink" href="#x1-110011" target="_top" shape="rect">1</a>  illustrates this
+  process.</p>
+      <div class="figure">
+         <a id="d57e352" shape="rect"></a>
+         <p class="title">
+            <strong>Figure&nbsp;1.&nbsp;<a id="x1-110011" shape="rect"></a>Short  overview  on  the  system's  process  flow.  Parts  of  the  InstantReality  scenegraph  (middle)  is
+transfered to the Sensation Engine (right) which activates the wind and warmth hardware (left) and informs
+the scenegraph about changes in e.g. airflow.</strong>
+         </p>
+         <div class="figure-contents">
+            <img src="fedoraxml_body_files/figure01.jpg" alt="Short overview on the system's process flow. Parts of the InstantReality scenegraph (middle) is transfered to the Sensation Engine (right) which activates the wind and warmth hardware (left) and informs the scenegraph about changes in e.g. airflow." width="600px">
+         </div>
+      </div>
+      <br class="figure-break" clear="none">
+      <p>Our concept to represent wind and warmth nodes is
+inspired by the Phong lighting model and also by the
+representation of sound objects inside Virtual Reality
+applications first presented by Fröhlich and Wachsmuth
+[<span class="citation">
+            <a class="xref" href="#XAcousticallyEnriched" title="FW12" shape="rect">FW12</a>
+         </span>]. They present three kinds of sound: ambient
+sound, static sound and event sound. Ambient sound can
+be perceived in large areas inside a scene and does not
+have a position. It is played with the same intensity on all
+available speakers. Only one ambient sound can be
+played at the same time. Static sounds are emitted
+directly by an object to which they are attached. A
+static sound's transformation is changed automatically
+when the transformation of the corresponding object is
+changed. The output of the individual speakers is
+adapted to intensity and direction of the sound and to
+the relative user position and rotation. Event sounds
+are related to the static sounds, but only triggered
+due to a certain event: This could be a ball hitting a
+surface e.g. water, stone or a virtual door shut by a
+user.</p>
+      <p>To simulate different types of sensations (e.g. fans, fire
+et cetera), the following wind and warmth node types
+were developed according to the above mentioned
+concept:</p>
+      <div class="itemizedlist">
+         <ul type="disc">
+            <li>
+               <p>
+
+  Directional wind / directional warmth
+</p>
+            </li>
+            <li>
+               <p>
+
+  Spot wind
+</p>
+            </li>
+            <li>
+               <p>
+
+  Point warmth
+</p>
+            </li>
+         </ul>
+      </div>
+      <p>
+The naming is inspired by the concept of representing light
+sources in the X3D standard. The instances of the
+nodetypes <span class="tt">directional wind / directional
+warmth</span> have an infinite distance towards the user and are
+analogous to the ambient sound nodes. Accordingly, they
+are perceivable inside the whole scene from the same
+direction (except from virtual occlusions). Examples for
+the usage of these nodetypes could be weather influences
+like storms or the effect of the sun. Nodes of the type
+<span class="tt">spot wind</span> have a fixed position and are bound to
+an object (e.g. to a virtual fan). These wind sources
+only influence the area which lies in a directed cone
+located in the wind source. The cone is defined by a
+given angle and the intensity of the wind source (cf.     figure  <a class="ulink" href="#x1-110022" target="_top" shape="rect">2</a>). The nodetype <span class="tt">point warmth</span> is similar
+  to the <span class="tt">spot wind</span>: It is bound to a certain object
+  (e.g. a virtual chimney), but it has no direction. The
+  warmth is emitted toward all directions and therefore
+  the node is represented by a sphere. The radius of
+  the sphere is defined by the node's intensity. Both
+  nodetypes can be seen as analogous to static and event
+  sound.</p>
+      <div class="figure">
+         <a id="d57e391" shape="rect"></a>
+         <p class="title">
+            <strong>Figure&nbsp;2.&nbsp;<a id="x1-110022" shape="rect"></a>Visualization of a spot wind produced by a
+virtual fan.</strong>
+         </p>
+         <div class="figure-contents">
+            <img src="fedoraxml_body_files/figure02.jpg" alt="Visualization of a spot wind produced by a virtual fan." width="500px">
+         </div>
+      </div>
+      <br class="figure-break" clear="none">
+   </div>
+   <div class="section" lang="en">
+      <div class="titlepage">
+         <h2 class="title" style="clear: both">
+            <a id="d57e396" shape="rect"></a>5.&nbsp;
+<a id="x1-120005" shape="rect"></a>Implementing Wind and Warmth in a CAVE Environment</h2>
+      </div>
+      <p>
+This chapter describes the actual implementation of the
+wind and warmth simulation system according to the
+requirements, starting with an overview of the existing VR
+environment, followed by descriptions of the hardware
+and software components.</p>
+      <div class="section" lang="en">
+         <div class="titlepage">
+            <h3 class="title">
+               <a id="d57e403" shape="rect"></a>5.1.&nbsp;
+<a id="x1-130005.1" shape="rect"></a>Basic Setup</h3>
+         </div>
+         <p>The stimuli are presented inside a three-sided
+(floor, front, left) CAVE environment. Six projectors use
+polarized light for enabling stereoscopic vision. User
+tracking is performed by a marker-based DTrack2 system
+by ART, using 10 cameras. The cameras use infrared light
+reflections for marker tracking. Spatial sound is enabled
+by a 8.1 sound system: Eight active speakers are arranged
+in a cube around the CAVE, a subwoofer system is embedded in
+the CAVE floor. An air conditioner assures a constant
+temperature of about 20 degrees Celsius. It does not
+produce any wind which could be perceived inside the
+CAVE.</p>
+         <p>To calculate the distributed graphical output, the
+InstantReality framework by the Fraunhofer IGD is
+applied. It is augmented by knowledge-based approaches
+for managing and representing sound, haptics et cetera as
+mentioned in [<span class="citation">
+               <a class="xref" href="#XAcousticallyEnriched" title="FW12" shape="rect">FW12</a>
+            </span>]. The scene itself is represented
+using an X3D-based scene graph.</p>
+      </div>
+      <div class="section" lang="en">
+         <div class="titlepage">
+            <h3 class="title">
+               <a id="d57e415" shape="rect"></a>5.2.&nbsp;
+<a id="x1-140005.2" shape="rect"></a>Hardware Implementation</h3>
+         </div>
+         <p>
+            <a id="x1-150005.2" shape="rect"></a>
+            <em>Wind</em> For the simulation of wind, the following
+solutions were considered:</p>
+         <div class="itemizedlist">
+            <ul type="disc">
+               <li>
+                  <p>
+                                                    Accurate simulation of the wind direction using
+          an industrial fan and an approach as presented in
+          [<span class="citation">
+                        <a class="xref" href="#Xkulkarni2012design" title="KMD12" shape="rect">KMD12</a>
+                     </span>]
+</p>
+               </li>
+               <li>
+                  <p>
+
+          CPU   fans   attached   to   the   user   as   used   in
+          [<span class="citation">
+                        <a class="xref" href="#Xlehmann" title="LGWS09" shape="rect">LGWS09</a>
+                     </span>], [<span class="citation">
+                        <a class="xref" href="#Xcardin" title="CTV07" shape="rect">CTV07</a>
+                     </span>] and similar approaches
+</p>
+               </li>
+               <li>
+                  <p>
+
+          Large scale fans attached to the CAVE hardware
+          as used in [<span class="citation">
+                        <a class="xref" href="#Xverlinden2013enhancement" title="VMV13" shape="rect">VMV13</a>
+                     </span>]
+</p>
+               </li>
+               <li>
+                  <p>
+
+          Air conditioner
+</p>
+               </li>
+               <li>
+                  <p>
+
+          Wind machines as used for special effects in films
+</p>
+               </li>
+            </ul>
+         </div>
+         <p>In the following, the decision to use large scale fans attached
+  to the CAVE hardware is explained. Arguments are
+  followed by the related hardware requirements in
+  parentheses. An accurate simulation of the wind direction
+  as presented in [<span class="citation">
+               <a class="xref" href="#Xkulkarni2012design" title="KMD12" shape="rect">KMD12</a>
+            </span>] is not possible, because of the
+  construction of the CAVE. Furthermore, their solution is
+  not real-time capable (HW2). While CPU fans are a cheap
+  solution and easy to control, they have to be attached
+  directly to the user to provide a sufficient wind simulation.
+  Hardware attached to the user could lead to a reduced
+  usability, because the user feels limited by the hardware
+  and may not act naturally anymore (HW4). The wind
+  created by an air conditioner is difficult to control
+  concerning the intensity, but also with regard to the wind
+  direction (HW3). Wind machines which could be
+  able to simulate a very realistic sensation of wind are
+  too noisy und would thus disrupt the user's presence
+  (HW4). Thus the only solution fully satisfying the
+  constraints is attaching large scale fans directly to the
+  CAVE: Eight fans by ADDA are attached in a circle
+  above the projection walls with an angle of 45 degrees
+  in between. The frontal fans could not be placed as
+  optimal as the other fans for technical reasons: The
+  back-projection mirror for the floor needs too much free
+  space.</p>
+         <p>Finally, due to the angle approximating the 45 degrees
+  proposed by Moon et al. [<span class="citation">
+               <a class="xref" href="#Xmoonkim" title="MK04" shape="rect">MK04</a>
+            </span>], the wind direction can
+  be simulated continuously on the horizontal plane (HW3).
+  A direct contact between fans and user or other parts
+                                                                                            
+
+                                                                                            
+of the hardware is prevented by their positioning.
+Therefore, endangering user or hardware can be excluded
+(HW1). Each fan has a diameter of 25.4 cm and a wind
+performance of 12.735 m³ / min. All fans are operated at
+115 instead of 230 Volt to reduce noise (HW4): From a
+distance of one meter, a noise volume of 55.6 dB/A can
+be measured. Figure  <a class="ulink" href="#x1-160013" target="_top" shape="rect">3</a>  shows a single fan and the
+mounting of the hardware inside the CAVE. Figure  <a class="ulink" href="#x1-160024" target="_top" shape="rect">4</a> 
+details the overall hardware architecture. Table  <a class="ulink" href="#x1-150011" target="_top" shape="rect">1</a> 
+summarizes the technical data. All fans are controlled in
+real-time via MultiDimMKIII Dimmerpacks by ShowTec
+(HW2).</p>
+         <div class="table">
+            <a id="d57e473" shape="rect"></a>
+            <p class="title">
+               <strong>Table&nbsp;1.&nbsp;<a id="x1-150011" shape="rect"></a>Axialfan: Detailed technical data.</strong>
+            </p>
+            <div class="table-contents">
+               <table summary="Axialfan: Detailed technical data." border="1">
+                  <colgroup span="1">
+                     <col span="1">
+                     <col span="1">
+                  </colgroup>
+                  <tbody>
+                     <tr>
+                        <td rowspan="1" colspan="1">
+                           <p>
+                              <span class="bf">                          
+                           </span></p>
+                        </td>
+                        <td rowspan="1" colspan="1">
+                           <p>
+                              <span class="bf">Fan Specification</span>                   
+                           </p>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td rowspan="1" colspan="1">
+                           <p>
+                              <span class="it">Device Name</span>                             
+                           </p>
+                        </td>
+                        <td rowspan="1" colspan="1">
+                           <p>Axialfan AK25489 by ADDA</p>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td rowspan="1" colspan="1">
+                           <p>
+                              <span class="it">Emitted Noise</span>                            
+                           </p>
+                        </td>
+                        <td rowspan="1" colspan="1">
+                           <p>55.6 dB/A                               </p>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td rowspan="1" colspan="1">
+                           <p>
+                              <span class="it">Power</span>                                        
+                           </p>
+                        </td>
+                        <td rowspan="1" colspan="1">
+                           <p>24.2 W                                    </p>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td rowspan="1" colspan="1">
+                           <p>
+                              <span class="it">Voltage</span>                                      
+                           </p>
+                        </td>
+                        <td rowspan="1" colspan="1">
+                           <p>115 V                                      </p>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td rowspan="1" colspan="1">
+                           <p>
+                              <span class="it">Shielding Angle (one direction)</span>
+                           </p>
+                        </td>
+                        <td rowspan="1" colspan="1">
+                           <p>approx. 35 ° </p>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td rowspan="1" colspan="1">
+                           <p>
+                              <span class="it">Maximum Intensity</span>                   
+                           </p>
+                        </td>
+                        <td rowspan="1" colspan="1">
+                           <p>12.735 m³ / min             </p>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td rowspan="1" colspan="1">
+                           <p>
+                              <span class="it">Diameter</span>                                   
+                           </p>
+                        </td>
+                        <td rowspan="1" colspan="1">
+                           <p>25.4 cm                                   </p>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td rowspan="1" colspan="1">
+                           <p>
+                              <span class="it">Weight</span>                                       
+                           </p>
+                        </td>
+                        <td rowspan="1" colspan="1">
+                           <p>2.00 kg                                    </p>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td rowspan="1" colspan="1">
+                           <p>
+                              <span class="it">Cost</span>                                           
+                           </p>
+                        </td>
+                        <td rowspan="1" colspan="1">
+                           <p> 60 Euro                                 </p>
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+            </div>
+         </div>
+         <br class="table-break" clear="none">
+         <p>
+            <a id="x1-160005.2" shape="rect"></a>
+            <em>Warmth</em> According to Dionisio [<span class="citation">
+               <a class="xref" href="#Xdionisio" title="Dio97a" shape="rect">Dio97a</a>
+            </span>] the following
+hardware solutions were considered:</p>
+         <div class="itemizedlist">
+            <ul type="disc">
+               <li>
+                  <p>
+
+  Heater blower
+</p>
+               </li>
+               <li>
+                  <p>
+
+  Infrared lamps
+</p>
+               </li>
+               <li>
+                  <p>
+
+  Peltier elements
+</p>
+               </li>
+               <li>
+                  <p>
+
+  Radiant heater
+</p>
+               </li>
+               <li>
+                  <p>
+
+  Air conditioner
+</p>
+               </li>
+               <li>
+                  <p>
+
+  Electric blankets/suits
+</p>
+               </li>
+            </ul>
+         </div>
+         <p>
+In the following, the decision to use infrared lamps is
+explained similar to the argumentation concerning the
+wind hardware. A radiant heater would - because of the
+usage of gas fuel - be too dangerous for the usage in the
+VR lab (HW1). The air conditioner was excluded because
+of its inertness, not being capable of real-time heating and
+because it requires a complex control mechanism without
+standardized interfaces (HW2). For most radiant heaters,
+the temperature cannot be set continuously (HW3).
+Furthermore, they need a time range of about one minute
+to reach an adequate temperature and thus are not
+real-time capable (HW2). In related projects, Peltier
+elements are used [<span class="citation">
+               <a class="xref" href="#Xdionisio" title="Dio97a" shape="rect">Dio97a</a>
+            </span>]. However, they must be
+attached directly to the user. This would raise the
+risk to reduce the system's usability and thus also the
+perceivable presence (HW4). Electric blankets or
+warming suits were also excluded, because like the
+Peltier elements, they could lead to a reduced usability
+(HW4).</p>
+         <p>Finally, only infrared lamps appear to be usable for
+  warmth simulations inside a CAVE: They endanger (if the
+  overall temperature is controlled by sensors) neither
+  user nor hardware (HW1) and react instantly (HW2).
+  Nevertheless, a system consisting of one infrared lamp
+  would be unable to simulate spatial warmth (HW3).
+  Furthermore, the warmth intensity created by a single
+  lamp using standard E27 sockets is not sufficient.
+  Therefore, a system consisting of six infrared lamps
+  placed on top of the CAVE is selected. Each lamp
+  has a power of 250 Watt and is able to heat the area
+  directly around the lamp to up to 100 degrees Celsius.
+  All lamps are placed on top of the CAVE to prevent
+  a distraction from the hardware setup (HW4) and
+  because the user's head is, according to [<span class="citation">
+               <a class="xref" href="#Xkojima2009" title="KHK09" shape="rect">KHK09</a>
+            </span>], one of
+  the most sensitive areas for warmth stimuli (most
+  other parts of the body are covered with clothes).
+  The lamps distance toward the user can be varied
+  according to the user's height (HW1). To prevent the
+  system from getting too hot, two <span class="it">M-ware®</span> temperature
+  sensors are attached to the CAVE (HW1). Unfortunately
+  the infrared lamps emit some visible light, which
+  distorts the projection. Therefore heat-proof color
+  foils are attached in front of the lamps; sideward,
+  they are surrounded by metal (HW4). If a lamp is
+  directed toward a tracking camera, a part of its field
+  of view is distorted. These areas are automatically
+  determined and excluded from tracking. Thus the
+  appearance of false positives when switching on the
+  lamps is prohibited. A part of the technical evaluation
+  presented in Section  <a class="ulink" href="#x1-200006.1.1" target="_top" shape="rect">6.1.1</a>  shows that tracking is not
+  affected by the usage of the lamps (HW4). Like the fans,
+  the infrared lamps are also controlled in real-time by
+  MultiDimMKIII Dimmerpacks (HW2). Figure  <a class="ulink" href="#x1-160013" target="_top" shape="rect">3</a>  shows
+  a single infrared lamp with the heat-proof color foil, the metal surrounding and the mounting inside the
+  CAVE.</p>
+         <div class="figure">
+            <a id="d57e616" shape="rect"></a>
+            <p class="title">
+               <strong>Figure&nbsp;3.&nbsp;<a id="x1-160013" shape="rect"></a>
+		Axialfan AK25489 by ADDA and infrared lamp with color foils and metal surrounding mounted on
+top of the CAVE with the projection switched on.</strong>
+            </p>
+            <div class="figure-contents">
+               <img src="fedoraxml_body_files/figure03.jpg" alt="Axialfan AK25489 by ADDA and infrared lamp with color foils and metal surrounding mounted on top of the CAVE with the projection switched on." width="500px">
+            </div>
+         </div>
+         <br class="figure-break" clear="none">
+         <p>                                                                                            
+Figure  <a class="ulink" href="#x1-160013" target="_top" shape="rect">3</a>  shows the mounting of fans and infrared
+lamps inside the CAVE. Figure  <a class="ulink" href="#x1-160024" target="_top" shape="rect">4</a>  gives an overview of
+the whole setup containing the hardware for creating wind
+and warmth.</p>
+         <div class="figure">
+            <a id="d57e630" shape="rect"></a>
+            <p class="title">
+               <strong>Figure&nbsp;4.&nbsp;<a id="x1-160024" shape="rect"></a>Overview of the CAVE environment enriched with fans and infrared lamps.</strong>
+            </p>
+            <div class="figure-contents">
+               <img src="fedoraxml_body_files/figure04.jpg" alt="Overview of the CAVE environment enriched with fans and infrared lamps." width="800px">
+            </div>
+         </div>
+         <br class="figure-break" clear="none">
+         <div class="table">
+            <a id="d57e635" shape="rect"></a>
+            <p class="title">
+               <strong>Table&nbsp;2.&nbsp;<a id="x1-160032" shape="rect"></a>Detailed  technical  data  of  a  single  infrared
+lamp.</strong>
+            </p>
+            <div class="table-contents">
+               <table summary="Detailed  technical  data  of  a  single  infrared
+lamp." border="1">
+                  <colgroup span="1">
+                     <col span="1">
+                     <col span="1">
+                  </colgroup>
+                  <tbody>
+                     <tr>
+                        <td rowspan="1" colspan="1">
+                           <p>
+                              <span class="bf">                          
+                           </span></p>
+                        </td>
+                        <td rowspan="1" colspan="1">
+                           <p>
+                              <span class="bf">Lamp Specification</span>         
+                           </p>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td rowspan="1" colspan="1">
+                           <p>
+                              <span class="it">Device Name</span>                             
+                           </p>
+                        </td>
+                        <td rowspan="1" colspan="1">
+                           <p>Osram THERA R126 Red</p>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td rowspan="1" colspan="1">
+                           <p>
+                              <span class="it">Emitted Noise</span>                            
+                           </p>
+                        </td>
+                        <td rowspan="1" colspan="1">
+                           <p>not noticeable                    </p>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td rowspan="1" colspan="1">
+                           <p>
+                              <span class="it">Power</span>                                        
+                           </p>
+                        </td>
+                        <td rowspan="1" colspan="1">
+                           <p>250 W                               </p>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td rowspan="1" colspan="1">
+                           <p>
+                              <span class="it">Voltage</span>                                      
+                           </p>
+                        </td>
+                        <td rowspan="1" colspan="1">
+                           <p>240 V                                </p>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td rowspan="1" colspan="1">
+                           <p>
+                              <span class="it">Shielding Angle (one direction)</span>
+                           </p>
+                        </td>
+                        <td rowspan="1" colspan="1">
+                           <p>30 °               </p>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td rowspan="1" colspan="1">
+                           <p>
+                              <span class="it">Maximum Intensity</span>                   
+                           </p>
+                        </td>
+                        <td rowspan="1" colspan="1">
+                           <p>100 °C                      </p>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td rowspan="1" colspan="1">
+                           <p>
+                              <span class="it">Diameter</span>                                   
+                           </p>
+                        </td>
+                        <td rowspan="1" colspan="1">
+                           <p>15 cm (incl. surrouding)   </p>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td rowspan="1" colspan="1">
+                           <p>
+                              <span class="it">Weight</span>                                       
+                           </p>
+                        </td>
+                        <td rowspan="1" colspan="1">
+                           <p>0.12 kg                              </p>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td rowspan="1" colspan="1">
+                           <p>
+                              <span class="it">Cost</span>                                           
+                           </p>
+                        </td>
+                        <td rowspan="1" colspan="1">
+                           <p>10 Euro                             </p>
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+            </div>
+         </div>
+         <br class="table-break" clear="none">
+      </div>
+      <div class="section" lang="en">
+         <div class="titlepage">
+            <h3 class="title">
+               <a id="d57e731" shape="rect"></a>5.3.&nbsp;
+<a id="x1-170005.3" shape="rect"></a>Software Implementation</h3>
+         </div>
+         <p>The software implementation
+consists of three main components: A wrapper for the
+above mentioned wind and warmth sources represented in
+the Virtual Reality framework (InstantReality), the
+sensation engine and a library loaded to establish the
+connection between VR framework and sensation engine.
+The library loaded by the VR framework sends all
+necessary changes inside the scene to the sensation
+engine. This is performed in fixed intervals. Afterwards,
+the engine calculates the activation of the wind and
+warmth hardware and propagates changes throughout the
+VR framework. Figure  <a class="ulink" href="#x1-170015" target="_top" shape="rect">5</a>  describes the information flow
+between the components of the wind and warmth
+framework.</p>
+         <div class="figure">
+            <a id="d57e741" shape="rect"></a>
+            <p class="title">
+               <strong>Figure&nbsp;5.&nbsp;<a id="x1-170015" shape="rect"></a>Information flow between the components in
+the  wind  and  warmth  framework  as  part  of  the  VR
+framework.</strong>
+            </p>
+            <div class="figure-contents">
+               <img src="fedoraxml_body_files/figure05.jpg" alt="Information flow between the components in the wind and warmth framework as part of the VR framework." width="500px">
+            </div>
+         </div>
+         <br class="figure-break" clear="none">
+         <p>
+The implementation of the sensation sources inside the
+VR framework consists of one wrapper node for each
+wind and warmth nodetype: directional wind, directional
+warmth, spot wind and point warmth. Furthermore,
+physical objects which are able to react to changes of the
+wind intensity (e.g. clouds, falling leaves, flags) are
+enriched via a connection to the sensation engine:
+The engine informs them about the airflow at their
+current position. The detection of virtual occlusions is
+implemented inside the graphics framework: Transfering
+all necessary geometries for occlusion checks to the
+sensation engine, would create unnecessary load for the
+network connection. For each object influenceable by
+wind effects and for the user himself, occlusions are
+checked as described in Algorithm  <a class="ulink" href="#x1-170031" target="_top" shape="rect">1</a>.</p>
+         <div class="example">
+            <a id="d57e751" shape="rect"></a>
+            <p class="title">
+               <strong>Algorithm&nbsp;1.&nbsp;<a id="x1-170031" shape="rect"></a> Occlusion   check.   The   constant
+MAX_DISTANCE ensures that objects like trees
+or  small  hills  which  are  too  far  away  from  the
+user can be ignored for occlusion. d is the distance
+between the position of the object for which the wind
+influence is tested and the point which is hit by the
+ray.</strong>
+            </p>
+            <div class="example-contents">
+               <img src="fedoraxml_body_files/algorithm01.jpg" width="300px">
+            </div>
+         </div>
+         <br class="example-break" clear="none">
+         <a id="x1-17002r1" shape="rect"></a>
+         <p>The library establishing the link between VR framework
+and sensation engine acts as a parser for the node format
+used in the VR framework. The nodes are serialized for
+the sensation engine and the information provided
+by the engine is transformed into valid nodetypes
+of the corresponding VR framework. This approach
+allows the usage of different VR/Graphics frameworks,
+e.g. InstantReality, Unity, Unreal Engine, Blender et
+cetera. Inside the sensation engine, the following steps are
+executed:</p>
+         <div class="orderedlist">
+            <ol type="1">
+               <li>
+                  <p>
+                     <a id="x1-17006x1" shape="rect"></a>
+  Update all nodes received from the client
+</p>
+               </li>
+               <li>
+                  <p>
+                     <a id="x1-17008x2" shape="rect"></a>
+  Execute calculations for wind and warmth effects
+</p>
+               </li>
+               <li>
+                  <p>
+                     <a id="x1-17010x3" shape="rect"></a>
+  Activate hardware and update the connected VR
+  framework about wind and warmth influences on
+  the scene
+</p>
+               </li>
+               <li>
+                  <p>
+                     <a id="x1-17012x4" shape="rect"></a>
+  Get  information  from  temperature  sensors  for
+  preventing overheating
+</p>
+               </li>
+            </ol>
+         </div>
+         <p>
+The calculations to activate the hardware are described
+in algorithm  <a class="ulink" href="#x1-170142" target="_top" shape="rect">2</a>: The activation for each hardware
+component has to be calculated for each sensation node
+via using the angle between 
+            <img src="fedoraxml_body_files/dvector.jpg" width="12px">
+(vector from sensation
+node to user position) and
+            <img src="fedoraxml_body_files/hwdirection.jpg" width="88px">
+ (vector
+from hardware component to user). Afterwards all
+activations for each hardware component are summed up
+and normalized. Here, it is assumed that wind and
+warmth sensations which have an influence on each
+other accumulate additive which was suggested by
+preceding tests. The hardware is controlled via the DMX
+protocol.</p>
+         <a id="x1-17013r2" shape="rect"></a>
+         <div class="example">
+            <a id="d57e792" shape="rect"></a>
+            <p class="title">
+               <strong>Algorithm&nbsp;2.&nbsp;<a id="x" shape="rect"></a>Mapping  of  sensation  nodes  on  the
+hardware components satisfying requirement (SW2)
+and   (SW8).   Here,   HWComponents  stands   for
+the   fans   and   infrared   lamps.   HWDirection  is
+the  direction  of  the  mounted  hardware  component
+toward the user. </strong>
+            </p>
+            <div class="example-contents">
+               <img src="fedoraxml_body_files/algorithm02.jpg" width="300px">
+            </div>
+         </div>
+         <br class="example-break" clear="none">
+      </div>
+   </div>
+   <div class="section" lang="en">
+      <div class="titlepage">
+         <h2 class="title" style="clear: both">
+            <a id="d57e797" shape="rect"></a>6.&nbsp;
+<a id="x1-180006" shape="rect"></a>Evaluation</h2>
+      </div>
+      <p>The system installed at Bielefeld University
+was evaluated with respect to technical properties
+of the hardware and software parts. Furthermore, a
+pilot study indicated a high level of presence and user
+experience which could be reached by the system. This
+section first presents technical evaluations followed by
+two user studies. The first one analyzes the accuracy
+with which the wind direction can be estimated by
+users, the reaction times regarding wind and warmth
+stimuli and the minimal activation of the hardware
+which is necessary to have any effect on the user.
+The second user study analyzes the subjective user
+experience.</p>
+      <div class="section" lang="en">
+         <div class="titlepage">
+            <h3 class="title">
+               <a id="d57e804" shape="rect"></a>6.1.&nbsp;
+<a id="x1-190006.1" shape="rect"></a>Analysis of the Technical Setup</h3>
+         </div>
+         <p>To evaluate the
+technical setup objectively, the following questions have to
+be answered:</p>
+         <div class="itemizedlist">
+            <ul type="disc">
+               <li>
+                  <p>
+
+  Do  the  infrared  heat  lamps  interfere  with  the
+  infrared-based tracking system?
+</p>
+               </li>
+               <li>
+                  <p>
+
+  How much latency does the system have and how
+  many wind and warmth sources can be added to
+  a  particular  scene  without  reducing  the  overall
+  performance?
+</p>
+               </li>
+               <li>
+                  <p>
+
+  What  is  the  size  of  the  volume  influenced  by
+  the wind and warmth hardware and what are the
+  possible  maximum  values  for  wind  speed  and
+  temperature?
+</p>
+               </li>
+            </ul>
+         </div>
+         <div class="section" lang="en">
+            <div class="titlepage">
+               <h4 class="title">
+                  <a id="d57e821" shape="rect"></a>6.1.1.&nbsp;
+      <a id="x1-200006.1.1" shape="rect"></a>Influence of the infrared lamps on marker-based
+  tracking</h4>
+            </div>
+            <p>As the tracking system uses infrared light
+  reflections to determine the position of the markers, the
+  tracking performance could suffer from the use of the
+  infrared lamps. To analyze the possible influence of the
+  lamps, a tool measuring the size of the tracking volume
+  has been developed and works as follows:</p>
+            <div class="orderedlist">
+               <ol type="1">
+                  <li>
+                     <p>
+                        <a id="x1-20002x1" shape="rect"></a>
+          Divide the tracking volume (the whole projection
+          area)  into  10  x  10  x  10  cuboids  with  an  edge
+          length of each 0.26 m x 0.208 m x 0.208 m
+</p>
+                  </li>
+                  <li>
+                     <p>
+                        <a id="x1-20004x2" shape="rect"></a>
+          Move  a  tracking  target  manually  through  the
+          CAVE. If one of the cuboids is hit at least twice
+          by the target, mark it it as covered by the tracking
+</p>
+                  </li>
+                  <li>
+                     <p>
+                        <a id="x1-20006x3" shape="rect"></a>
+          Return   the   percentage   and   the   positions   of
+          covered cuboids
+</p>
+                  </li>
+               </ol>
+            </div>
+            <p>
+First, the coverage of the original setup (without the use of
+  infrared lamps) is determined. Afterwards, all infrared
+  lamps are switched on with full power. Some of the
+  tracking cameras are directly spotted by the lamps. This
+  leads to some areas in the lens coverage of single cameras
+  which are not usable for tracking. These areas are
+  automatically excluded in a calibration pass. Figure  <a class="ulink" href="#x1-200076" target="_top" shape="rect">6</a> 
+  visualizes the areas excluded for single cameras. The
+  target is then again moved through the CAVE. Afterwards,
+  the results with and without infrared lamps can be
+  compared.</p>
+            <div class="figure">
+               <a id="d57e849" shape="rect"></a>
+               <p class="title">
+                  <strong>Figure&nbsp;6.&nbsp;<a id="x1-200076" shape="rect"></a>Each box displays the analyzed image for a
+single  tracking  camera.  The  dark  areas  are  excluded
+from tracking, because they are directly spotted by the
+infrared lamps.</strong>
+               </p>
+               <div class="figure-contents">
+                  <img src="fedoraxml_body_files/figure06.jpg" alt="Each box displays the analyzed image for a single tracking camera. The dark areas are excluded from tracking, because they are directly spotted by the infrared lamps." width="600px">
+               </div>
+            </div>
+            <br class="figure-break" clear="none">
+            <p>
+The coverage was measured for three kinds of targets: A
+worn passive rigid body with strong signs of usage, a
+new passive rigid body, and an active target used for
+handtracking.</p>
+            <div class="table">
+               <a id="d57e856" shape="rect"></a>
+               <p class="title">
+                  <strong>Table&nbsp;3.&nbsp;<a id="x1-200083" shape="rect"></a>Percentage  of  covered  tracking  volume  for
+three kinds of targets. Results were the same with and
+without infrared lamps.</strong>
+               </p>
+               <div class="table-contents">
+                  <table summary="Percentage  of  covered  tracking  volume  for
+three kinds of targets. Results were the same with and
+without infrared lamps." border="1">
+                     <colgroup span="1">
+                        <col span="1">
+                        <col span="1">
+                     </colgroup>
+                     <tbody>
+                        <tr>
+                           <td rowspan="1" colspan="1">
+                              <p>
+                                 <span class="bf">Target</span>          
+                              </p>
+                           </td>
+                           <td rowspan="1" colspan="1">
+                              <p>
+                                 <span class="bf">Coverage</span>
+                              </p>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td rowspan="1" colspan="1">
+                              <p>
+                                 <span class="it">Worn passive</span>
+                              </p>
+                           </td>
+                           <td rowspan="1" colspan="1">
+                              <p>55 %        </p>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td rowspan="1" colspan="1">
+                              <p>
+                                 <span class="it">New passive</span> 
+                              </p>
+                           </td>
+                           <td rowspan="1" colspan="1">
+                              <p>96 %        </p>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td rowspan="1" colspan="1">
+                              <p>
+                                 <span class="it">Active</span>           
+                              </p>
+                           </td>
+                           <td rowspan="1" colspan="1">
+                              <p>81 %        </p>
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>
+            </div>
+            <br class="table-break" clear="none">
+            <p>The tracking volume was not influenced in any of the
+tests. Table  <a class="ulink" href="#x1-200083" target="_top" shape="rect">3</a>  shows the results which were the same for
+both tests. Yet it must be suspected that in a different
+setting (e.g. with more infrared lamps or with fewer
+tracking cameras), the tracking could be affected by the
+lamps. In these cases, the lens coverage directly disturbed
+by the lamps might be too large which would make it
+impossible to exclude it from tracking without reducing
+the trackable volume. Nevertheless, using enough tracking
+cameras (10 in our case), the overall quality of the
+tracking is not influenced by the use of the infrared
+lamps.</p>
+         </div>
+         <div class="section" lang="en">
+            <div class="titlepage">
+               <h4 class="title">
+                  <a id="d57e903" shape="rect"></a>6.1.2.&nbsp;
+<a id="x1-210006.1.2" shape="rect"></a>Performance</h4>
+            </div>
+            <p>The sensation simulator runs at about
+30 fps. To determine the time, the wind and warmth
+actuators need to influence the area at the center of the
+CAVE, the following experiment was conducted: The
+hardware components are activated as if a virtual wind or
+warmth source would be presented toward a user. In the
+center of the CAVE, a device to measure the stimulus is
+placed inside the volume the user's head normally fills.
+Afterwards, the wind node is activated and the time after
+the measurement device detects a change in wind speed is
+taken. A similar experiment was conducted to measure the
+reaction time of the lamps. After determining the time, the
+lamps and fans need to be switched on and make their
+sensations perceivable inside the CAVE. The time to
+deactivate the stimuli is measured using a similar
+procedure.</p>
+            <p>To minimize the delay the measurement device
+for wind speed induces, it was replaced by a simple
+pendulum trackable by the ART tracking system. The time
+the pendulum needed to be affected by the wind was
+measured. For measuring the warmth, a VOLTCRAFT
+IR 280 measurement device was used (latency &lt; 0.5 s).</p>
+            <p>Warmth needed 1.5 seconds to influence the measured
+area after the lamps were switched on and 1.8 seconds to
+create a measurable temperature difference after switching
+the lamps off. The values for wind were 2.1 seconds for
+switching on and 1.1 seconds for switching off. The
+hardware itself reacts instantly, the measured values
+represent the time which the air at the center of the CAVE
+needs to be moved by the fans or to be heated by the
+lamps.</p>
+            <p>In a second step, the number of possible wind and
+  warmth sources in a typical VR scene was tested: A
+  number of 150 to 200 wind or warmth sources can be used
+  simultaneously without reducing the framerate. As for
+  typical VR scenes, not more than 10 or 20 different stimuli
+  sources are used, the wind and warmth system does not
+  affect the overall simulation performance.</p>
+         </div>
+         <div class="section" lang="en">
+            <div class="titlepage">
+               <h4 class="title">
+                  <a id="d57e916" shape="rect"></a>6.1.3.&nbsp;
+      <a id="x1-220006.1.3" shape="rect"></a>Intensity distribution of wind and warmth</h4>
+            </div>
+            <p>To determine
+  the intensity distribution of the presented stimuli, the
+  intensity of a single wind and a single warmth source was
+  measured on 20 points equally distributed on a horizontal
+  grid inside the CAVE. As intensity measure, meters per
+  second <em>(m / s)</em> were used to describe the wind intensity,
+  and degrees Celsius were used to describe the warmth
+  intensity. A wind measurement device by ELV was
+  used to determine the wind speed. As temperature
+  sensor, the VOLTCRAFT IR 280 was used. Figure
+  <a class="ulink" href="#x1-220017" target="_top" shape="rect">7</a>  shows the grid and the infrared lamps and fans
+  used to simulate the virtual wind and warmth source:
+  Both stimuli have their origin directly in front of the
+  typical user position. The size of the hardware devices
+  shown in the figure relatively depicts their activation
+  level.</p>
+            <div class="figure">
+               <a id="d57e929" shape="rect"></a>
+               <p class="title">
+                  <strong>Figure&nbsp;7.&nbsp;<a id="x1-220017" shape="rect"></a>Grid  to  measure  the  distribution  of  wind
+and warmth inside the CAVE. The pictured hardware
+devices'    size    relatively    depicts    their    activation
+level.  Each  box  inside  the  graphic  visualizes  one
+measurement point.</strong>
+               </p>
+               <div class="figure-contents">
+                  <img src="fedoraxml_body_files/figure07.jpg" alt="Grid to measure the distribution of wind and warmth inside the CAVE. The pictured hardware devices' size relatively depicts their activation level. Each box inside the graphic visualizes one measurement point." width="500px">
+               </div>
+            </div>
+            <br class="figure-break" clear="none">
+            <p>The <span class="bf">warmth</span> distribution was investigated on three
+planes with a vertical distance of 25 cm, 35 cm and 45 cm
+toward the lamps. If all infrared lamps are switched off,
+the room has a basic temperature of about 20 °C. This
+temperature is normally assured by two air conditioners.
+However, the lamps are able to heat the room temporarily,
+because of the slow reaction time of the air conditioners.
+After activating the simulation of a virtual warmth
+source directly behind the front wall of the CAVE, the
+highest temperature measured on the grid was 28.7 °C,
+which is a possible temperature increase of 8.5 °C.
+The lowest temperature measured on the grid was
+22.6 °C. Figure  <a class="ulink" href="#x1-220028" target="_top" shape="rect">8</a>  shows the warmth distribution on the
+grid for all three planes. The results indicate that a
+high level of temperature increase is possible (7.1 °C more than the threshold determined by Gray et al. to
+make warmth perceivable on the skin [<span class="citation">
+                  <a class="xref" href="#Xgray" title="GSM82" shape="rect">GSM82</a>
+               </span>]). The
+temperature is distributed quite constantly inside the
+whole CAVE area. Therefore it is assumed that the warmth
+direction cannot be perceived by possible users in a solid
+way.</p>
+            <div class="figure">
+               <a id="d57e945" shape="rect"></a>
+               <p class="title">
+                  <strong>Figure&nbsp;8.&nbsp;<a id="x1-220028" shape="rect"></a>Distribution  of  warmth  inside  the  CAVE
+depending on the vertical distance toward the infrared
+lamps.</strong>
+               </p>
+               <div class="figure-contents">
+                  <img src="fedoraxml_body_files/figure08.jpg" alt="Distribution of warmth inside the CAVE depending on the vertical distance toward the infrared lamps." width="300px">
+               </div>
+            </div>
+            <br class="figure-break" clear="none">
+            <p>The <span class="bf">wind</span> distribution is measured on 5 planes with a
+vertical distance of 45 cm, 55 cm, 65 cm, 75 cm and 85 cm toward the fans. Without activating any virtual
+wind source, no wind flow can be measured inside
+the whole area. After activating the simulation of a
+virtual wind source directly behind the front wall, a
+maximum wind speed of 19.7 m / s can be measured. It is
+eye-catching that the wind intensity strongly depends on
+the position and direction of the fans. For this evaluation a
+frontal wind source was used, because this represents
+the worst case concerning the wind distribution: The
+frontal fans are not placed as equal as the other fans
+inside the setup as explained in Section  <a class="ulink" href="#x1-90003.1" target="_top" shape="rect">3.1</a>. The
+results (see Figure  <a class="ulink" href="#x1-220039" target="_top" shape="rect">9</a>) suggest that the best area to
+perceive wind sources from arbitrary directions is
+in the center of the CAVE. Although the influence
+is quite moderate, the results for different vertical
+distances are balanced and a wind speed of 2.3 m / s
+on average (45 cm: 3.6 m / s, 55 cm: 4.4 m / s, 65 cm:
+3.6 m / s, 75 and 85 cm: 0 m / s - too little wind to be
+measurable) can be measured in the center of the CAVE.
+Furthermore, an equal wind quality for most possible wind
+directions is expected for this central position which is
+also the most typical position of the user in many
+applications.</p>
+            <div class="figure">
+               <a id="d57e961" shape="rect"></a>
+               <p class="title">
+                  <strong>Figure&nbsp;9.&nbsp;<a id="x1-220039" shape="rect"></a>Distribution   of   wind   inside   the   CAVE
+depending on the vertical distance toward the fans.</strong>
+               </p>
+               <div class="figure-contents">
+                  <img src="fedoraxml_body_files/figure09.jpg" alt="Distribution of wind inside the CAVE depending on the vertical distance toward the fans." width="300px">
+               </div>
+            </div>
+            <br class="figure-break" clear="none">
+         </div>
+      </div>
+      <div class="section" lang="en">
+         <div class="titlepage">
+            <h3 class="title">
+               <a id="d57e966" shape="rect"></a>6.2.&nbsp;
+<a id="x1-230006.2" shape="rect"></a>
+Wind Direction, Reaction Times and Activation
+Thresholds</h3>
+         </div>
+         <p>In a user-centered evaluation, the following
+questions were investigated:</p>
+         <div class="itemizedlist">
+            <ul type="disc">
+               <li>
+                  <p>
+
+  How        precisely        can        the        direction
+  of       presented       virtual       wind       sources
+  be         estimated         by         test         subjects?
+   <a id="x1-23001f1" shape="rect"></a>
+                     <span class="footnoteReference">&nbsp;[<a id="d57e978" href="#ftn.d57e978" shape="rect">1</a>]</span>
+                  </p>
+               </li>
+               <li>
+                  <p>
+
+  What is users' reaction time toward the activation
+  and deactivation of presented wind and warmth
+  stimuli?
+</p>
+               </li>
+               <li>
+                  <p>
+
+  How much activation must be at least provided
+  by  the  fans  and  the  infrared  lamps  to  make  the
+  stimulus perceivable?
+</p>
+               </li>
+            </ul>
+         </div>
+         <p>To answer these questions, a small study with N = 9 subjects
+was conducted. Their age ranged between 20 and 51 years
+(M = 22.67, SD = 10.3). They were recruited through
+postings in the university building and all of them were
+native speakers of German. Most were students at
+Bielefeld University, three were female. The design
+comprises three steps with the same participants. First, a
+set of given wind directions had to be estimated by the
+participants. A Nintendo Wii remote was used to point at
+the estimated wind direction. Second, the reaction times
+were evaluated, and third the activation thresholds
+were tested. To reduce hints on possible activations of
+hardware components, participants were blindfolded
+in each stage of the experiment in which wind was
+used. Additionally, an artificial wind sound was faded
+in - independently from the actual activation of the
+hardware - to prevent participants from hearing the
+fans.</p>
+         <div class="section" lang="en">
+            <div class="titlepage">
+               <h4 class="title">
+                  <a id="d57e993" shape="rect"></a>6.2.1.&nbsp;
+      <a id="x1-240006.2.1" shape="rect"></a>Setup</h4>
+            </div>
+            <p>Before starting the experiment, the participant
+  was placed in the center of the CAVE. The Nintendo Wii
+  remote equipped with a tracking target was placed in the
+  dominant hand. At first, the accuracy for determining wind
+  directions was tested. As pointing with the Wii remote
+  could be error-prone and because not all possible
+  participants could be expected to have the same pointing
+  accuracy using this device, the accuracy was evaluated
+  before the actual experiment as follows: A blue circle was
+  projected directly on one of the CAVE screens without
+  using the system's 3D mode. The participant used the Wii
+  remote to point at the circle and pressed a button. This was
+  repeated eight times and the pointing error with respect to
+  x and z axis was saved. The positions of the circles were
+  varied between participants using a 9x9 Latin square
+  pattern.</p>
+            <p>Directly before starting the actual experiment,
+  the participant was blindfolded. Then the visual
+  stimuli were replaced by wind stimuli. Again, the
+  participant used the Wii remote to point toward the wind
+  source. Then a button was pressed and the wind was
+  deactivated. After a short period, a new wind source
+  was presented. This was repeated for eight times.
+  Now, the error with respect to the x and z axis was
+  determined <a id="x1-24001f2" shape="rect"></a>
+               <span class="footnoteReference">&nbsp;[<a id="d57e1003" href="#ftn.d57e1003" shape="rect">2</a>]</span>.
+  The possible wind positions were varied by using a 9x9
+  Latin square pattern. They were arranged all around the
+  user to ensure a good coverage.</p>
+            <p>The reaction times toward presented stimuli were
+  tested during a second pass: The participant was still
+  blindfolded and a virtual wind source directly in front of
+  the participant was activated on full power. As soon as the
+  participant perceived the stimulus, a button on the Wii
+  remote had to be pressed. The stimulus was then presented
+  for a few more seconds and finally switched off. As soon
+  as the participant had perceived that the stimulus had
+  stopped, the button had to be pressed again. Afterwards,
+  the same procedure was executed using a warmth
+  source.</p>
+            <p>In a third step, hardware activation thresholds necessary
+  to make a stimulus perceivable were determined: Fans
+  were activated in five percent steps until the participant
+  perceived the stimulus and pressed the button. This was
+  repeated using the infrared lamps afterwards. Here,
+  the lamps and fans were not switched off during the
+  on phases, because the temperature threshold which
+  is necessary to perceive a change in temperature, is
+                                                                                            
+
+                                                                                            
+smaller if the temperature decreases [<span class="citation">
+                  <a class="xref" href="#Xgray" title="GSM82" shape="rect">GSM82</a>
+               </span>]. This
+would have led to a falsification of the results: The
+participants would have reacted to the switch off events
+and not as it was desired toward the increase of the
+temperature.</p>
+         </div>
+         <div class="section" lang="en">
+            <div class="titlepage">
+               <h4 class="title">
+                  <a id="d57e1014" shape="rect"></a>6.2.2.&nbsp;
+<a id="x1-250006.2.2" shape="rect"></a>Procedure</h4>
+            </div>
+            <p>After entering the laboratory, the participant
+filled in a consent form and was accompanied to the
+CAVE. There, demographic data was collected during a
+short interview conducted by the investigator. Then the
+participant, equipped with tracked 3D goggles and a Wii
+remote, was placed in the center of the CAVE according to
+the results found in chapter  <a class="ulink" href="#x1-220006.1.3" target="_top" shape="rect">6.1.3</a>. The investigator who
+led the experiment blindfolded and unblindfolded the
+participant and gave the instructions for each part of the
+three experiment passes. The whole procedure lasted
+approximately 10 minutes.</p>
+         </div>
+         <div class="section" lang="en">
+            <div class="titlepage">
+               <h4 class="title">
+                  <a id="d57e1024" shape="rect"></a>6.2.3.&nbsp;
+<a id="x1-260006.2.3" shape="rect"></a>Results and discussion</h4>
+            </div>
+            <p>The <span class="bf">accuracy</span> to point on a
+presented wind source has a mean angle of M = 14.13
+degrees (SD = 30.25) after subtracting the error to point
+with the Wii remote. The results are visualized in figure
+<a class="ulink" href="#x1-2600110" target="_top" shape="rect">10</a>.
+</p>
+            <div class="figure">
+               <a id="d57e1037" shape="rect"></a>
+               <p class="title">
+                  <strong>Figure&nbsp;10.&nbsp;<a id="x1-2600110" shape="rect"></a>Accuracy  concerning  the  detection  of  the
+wind direction. The small white circle visualizes the
+user.</strong>
+               </p>
+               <div class="figure-contents">
+                  <img src="fedoraxml_body_files/figure10.jpg" alt="Accuracy concerning the detection of the wind direction. The small white circle visualizes the user." width="300px">
+               </div>
+            </div>
+            <br class="figure-break" clear="none">
+            <p>Regarding the <span class="bf">reaction time</span>, typical users need to
+react toward a wind stimulus, the time to perceive the
+appearance of the stimulus is significantly longer (p &lt; 0.01) than the time for perceiving the disapperance
+<em>(M<sup>+</sup> = 3.1 s, M<sup>-</sup> = 1.3 s,)</em>. Concerning warmth, there is
+no significant difference <em>(M<sup>+</sup> = 2.5 s, M<sup>-</sup> = 2.0 s,)</em>.
+Table  <a class="ulink" href="#x1-260024" target="_top" shape="rect">4</a>  summarizes these results. Altogether, the
+reaction times suffice to simulate static and ambient
+wind sources, but also event winds for e.g. a passing
+train or the approaching toward a warm chimney in
+realtime. Shorter events e.g. the airflow created by a door
+which is closed, can be simulated in many cases by
+precomputing the time, at which the wind stimulus should
+start.</p>
+            <div class="table">
+               <a id="d57e1068" shape="rect"></a>
+               <p class="title">
+                  <strong>Table&nbsp;4.&nbsp;<a id="x1-260024" shape="rect"></a>Reaction    times    of    participants    toward
+activation and deactivation of wind and heat sources.</strong>
+               </p>
+               <div class="table-contents">
+                  <table summary="Reaction    times    of    participants    toward
+activation and deactivation of wind and heat sources." border="1">
+                     <colgroup span="1">
+                        <col span="1">
+                        <col span="1">
+                     </colgroup>
+                     <tbody>
+                        <tr>
+                           <td rowspan="1" colspan="1">
+                              <p>
+                                 <span class="bf">Reaction Time</span>
+                              </p>
+                           </td>
+                           <td rowspan="1" colspan="1">
+                              <p>
+                                 <span class="bf">Time in seconds: Mean (SD)</span>
+                              </p>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td rowspan="1" colspan="1">
+                              <p>
+                                 <span class="it">Fans on</span>            
+                              </p>
+                           </td>
+                           <td rowspan="1" colspan="1">
+                              <p>3.144 (0.290)                          </p>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td rowspan="1" colspan="1">
+                              <p>
+                                 <span class="it">Fans off </span>           
+                              </p>
+                           </td>
+                           <td rowspan="1" colspan="1">
+                              <p>1.313 (0.850)                          </p>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td rowspan="1" colspan="1">
+                              <p>
+                                 <span class="it">Lamps on</span>         
+                              </p>
+                           </td>
+                           <td rowspan="1" colspan="1">
+                              <p>2.450 (1.933)                          </p>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td rowspan="1" colspan="1">
+                              <p>
+                                 <span class="it">Lamps off </span>         
+                              </p>
+                           </td>
+                           <td rowspan="1" colspan="1">
+                              <p>2.045 (2.081)                          </p>
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>
+            </div>
+            <br class="table-break" clear="none">
+            <p>For the activation thresholds which are at minimum
+necessary to make a user perceive a stimulus, the
+following results were found: Warmth is detected with an
+activation of M = 57 percent (SD = 21). For wind, the
+values are slightly lower with M = 47 percent (SD = 9).
+These results must be considered when developing
+applications using the presented system. Furthermore, the
+high values suggest the use of stronger hardware devices if
+providing a more intense feeling is necessary (e.g. for
+firefighter simulations).</p>
+         </div>
+      </div>
+      <div class="section" lang="en">
+         <div class="titlepage">
+            <h3 class="title">
+               <a id="d57e1125" shape="rect"></a>6.3.&nbsp;
+<a id="x1-270006.3" shape="rect"></a>Pilot Study on User Experience</h3>
+         </div>
+         <p>To gain a first hint on
+the user experience, which can be reached using the
+presented system, a pilot study with N = 23 participants (9
+female, 14 male, <em>M<sup>age</sup> = 25</em> years, <em>SD<sup>age</sup> = 8.68</em>) was
+conducted. The participants were mainly students
+recruited in the university building. All of them were
+randomly assigned to one of two between-subject
+conditions: The control group (N=12) experiences certain
+Virtual Reality scenes without wind and warmth stimuli,
+the test group (N=11) perceives the scenes enriched with
+wind and warmth.</p>
+         <div class="section" lang="en">
+            <div class="titlepage">
+               <h4 class="title">
+                  <a id="d57e1144" shape="rect"></a>6.3.1.&nbsp;
+<a id="x1-280006.3.1" shape="rect"></a>Setup</h4>
+            </div>
+            <p>The participant wearing 3D goggles and a
+Nintendo Wii remote was placed inside the CAVE. An
+information text was projected on the front wall and
+described the participant's fictitious role in the following
+experiment: "As a researcher on an expedition you will
+move through certain different environments. During the
+experiment, you have to solve small tasks".</p>
+            <p>Subsequently, another text was presented. It contained a
+short introduction to the following virtual world and
+instructed the participant to closely investigate and
+remember the environment. Now the first scene was
+presented. To prevent overcharging the participant with
+learning special navigation techniques, the participant was
+moved automatically through the environment. The only
+direct interaction with the scene consisted of virtual
+buttons which were able to be activated by the participant
+using the Wii remote. After moving through the scene, a questionnaire was filled out. This procedure was repeated
+ with five different scenes. To prevent an influence on the
+ results according to the order in which the scenes were
+ presented, they were varied using a 5x5 Latin square
+ pattern. Each scene contained wind and/or warmth stimuli.
+ The following list presents the scenes used (cf. figure
+ <a class="ulink" href="#x1-2800111" target="_top" shape="rect">11</a> ):</p>
+            <div class="orderedlist">
+               <ol type="1">
+                  <li>
+                     <p>
+                        <span class="bf">Desert (Warmth)</span> The                 room                 in
+     which the participant is placed has a gate at one
+     side. It can be opened by using a virtual button.
+     As soon as the gate is opened, the participant is
+     moved through a sparse desert-like environment.
+     When the participant enters the desert, a warmth
+     stimulus is presented.</p>
+                  </li>
+                  <li>
+                     <p>
+                        <span class="bf">Volcano (Wind and Warmth)</span> The  participant  is
+     placed on a scaffold over an ocean. The scaffold
+     leads to an isle consisting of a volcano. At first -
+     when being on the scaffold - a wind stimulus can
+     be  perceived.  When  approaching  the  volcano's
+     lava lake, the wind is occluded by a rock and a
+     warmth stimulus is presented.</p>
+                  </li>
+                  <li>
+                     <p>
+                        <span class="bf">Fan (Wind)</span> A   living   room   is   crossed   by   the
+     participant. From the right, a wind stimulus can
+     be perceived. It results from a virtual fan, which
+     is placed on a desk. The participant can control
+     the fan's intensity by using virtual buttons on the
+     desk.</p>
+                  </li>
+                  <li>
+                     <p>
+                        <span class="bf">Chimney (Warmth)</span> In  a  small  room,  a  virtual
+     chimney  is  presented.  First,  it  is  covered  by  a
+     transparent pane. The participant can remove the
+     pane by pressing a virtual button. This intensifies
+     the presented warmth stimulus.</p>
+                  </li>
+                  <li>
+                     <p>
+                        <span class="bf">Train (Wind)</span> The  participant  moves  through  a
+     railway  tunnel.  After  a  time,  sounds  created
+     by  an  approaching  train  can  be  perceived.  The
+     navigation  speed  is  increased  and  just  before
+     the  train  arrives,  the  participant  is  stopped  and
+     placed next to the tunnels wall. When passing the
+     participant, the train produces wind.</p>
+                  </li>
+               </ol>
+            </div>
+            <div class="figure">
+               <a id="d57e1182" shape="rect"></a>
+               <p class="title">
+                  <strong>Figure&nbsp;11.&nbsp;<a id="x1-2800111" shape="rect"></a>Scenes presented for the subjective measures. From left to right and top to bottom: Desert, Volcano,
+Fan, Chimney and Train.</strong>
+               </p>
+               <div class="figure-contents">
+                  <img src="fedoraxml_body_files/figure11.jpg" alt="Scenes presented for the subjective measures. From left to right and top to bottom: Desert, Volcano, Fan, Chimney and Train." width="500px">
+               </div>
+            </div>
+            <br class="figure-break" clear="none">
+         </div>
+         <div class="section" lang="en">
+            <div class="titlepage">
+               <h4 class="title">
+                  <a id="d57e1187" shape="rect"></a>6.3.2.&nbsp;
+<a id="x1-290006.3.2" shape="rect"></a>Measures</h4>
+            </div>
+            <p>The following dependent variables were
+	analyzed to gain a hint on user experience:</p>
+            <div class="itemizedlist">
+               <ul type="disc">
+                  <li>
+                     <p>
+
+  Realism of the intensity of wind and warmth
+</p>
+                  </li>
+                  <li>
+                     <p>
+
+  Realism of the direction of wind and warmth
+</p>
+                  </li>
+                  <li>
+                     <p>
+
+  Perceived presence
+</p>
+                  </li>
+               </ul>
+            </div>
+            <p>The dependent variables were analyzed and measured
+using five types of questionnaires: (1) One questionnaire
+was used for surveying demographic information. (2) The
+standardized Immersion Tendency Questionnaire (ITQ)
+developed by Witmer and Singer [<span class="citation">
+                  <a class="xref" href="#XWitmer1998" title="WS98" shape="rect">WS98</a>
+               </span>] consists of 12
+questions and measures the capability of individuals to
+get immersed in everyday activities (e.g. reading,
+watching movies). (3) The standardized Simulator
+Sickness Questionnaire [<span class="citation">
+                  <a class="xref" href="#XsimulatorSickness" title="KLBL93" shape="rect">KLBL93</a>
+               </span>] measures simulator
+sickness induced by the virtual environment. (4) A
+modified version of the Slater, Usoh, Stead Questionnaire
+(SUS) [<span class="citation">
+                  <a class="xref" href="#Xsus" title="UCAS00" shape="rect">UCAS00</a>
+               </span>] was applied to provide a measure for
+determining the perceived presence during the experiment
+(in the interval [0,9]). (5) A further questionnaire
+adapted to the scenes determined the quality of the
+stimuli's direction and intensity and includes further
+open questions about the participants' experience.
+The realism of the intensity was rated on a five point
+scale in the interval [-2,+2], where zero is the optimal
+value. Lower values stand for weak stimuli, higher
+values for stimuli which are too intense. The direction
+was also rated on a five point scale, in this case in
+the interval [0,+4]. Here zero stands for the optimal
+direction and higher values indicate a less realistic
+perceived wind direction compared with the visual
+stimuli.</p>
+         </div>
+         <div class="section" lang="en">
+            <div class="titlepage">
+               <h4 class="title">
+                  <a id="d57e1215" shape="rect">6.3.3.&nbsp;                                                  </a><a id="x1-300006.3.3" shape="rect"></a>Procedure</h4>
+            </div>
+            <p>Before entering the virtual environment,
+  the participant had to fill in a consent form and the
+  questionnaires 1, 2 and 3. Then, the participant was placed
+  in the center of the CAVE and equipped with a Wii remote
+  and tracked goggles. After explaining the procedure,
+  the information text was presented on the projection
+  walls. Next, each scene was presented and followed by
+  questionnaire 4 and 5. After encountering all five scenes,
+  the Simulator Sickness Questionnaire was answered again.
+  Eventually, the participant was thanked for joining the
+  experiment. This procedure needed approximately 30
+  minutes.</p>
+         </div>
+         <div class="section" lang="en">
+            <div class="titlepage">
+               <h4 class="title">
+                  <a id="d57e1222" shape="rect"></a>6.3.4.&nbsp;
+      <a id="x1-310006.3.4" shape="rect"></a>Results and discussion</h4>
+            </div>
+            <p>Both groups had a similar
+	immersion tendency as measured by the ITQ <em>(M<sup>control</sup> = 31,
+  SD<sup>control</sup> = 11, M<sup>ww</sup> = 36, SD<sup>ww</sup> = 12)</em>. Figure  <a class="ulink" href="#x1-3100112" target="_top" shape="rect">12</a> 
+  visualizes the perceived quality of the stimuli's direction
+  and the intensity. See table <a class="ulink" href="#x1-310025" target="_top" shape="rect">5</a> and table  <a class="ulink" href="#x1-310036" target="_top" shape="rect">6</a> for the results
+  broken down for the single scenes. The intensity is rated
+  as realistic, but in some cases slightly too weak for both
+  types of stimuli. There is no significant difference between
+  wind and warmth. The results for the direction are similar,
+  here are also no significant differences between wind and
+  warmth.</p>
+            <div class="figure">
+               <a id="d57e1253" shape="rect"></a>
+               <p class="title">
+                  <strong>Figure&nbsp;12.&nbsp;<a id="x1-3100112" shape="rect"></a>Quality  of  the  perceived  direction  and
+intensity  of  the  stimulus  for  group  WW  (0:  optimal
+value).</strong>
+               </p>
+               <div class="figure-contents">
+                  <img src="fedoraxml_body_files/figure12.jpg" alt="Quality of the perceived direction and intensity of the stimulus for group WW (0: optimal value)." width="400px">
+               </div>
+            </div>
+            <br class="figure-break" clear="none">
+            <div class="table">
+               <a id="d57e1258" shape="rect"></a>
+               <p class="title">
+                  <strong>Table&nbsp;5.&nbsp;<a id="x1-310025" shape="rect"></a>Realism of wind intensity and wind direction
+(0: optimal). Codes of significance: *** p &lt; 0.05</strong>
+               </p>
+               <div class="table-contents">
+                  <table summary="Realism of wind intensity and wind direction
+(0: optimal). Codes of significance: *** p &lt; 0.05" border="1">
+                     <colgroup span="1">
+                        <col span="1">
+                        <col span="1">
+                        <col span="1">
+                     </colgroup>
+                     <tbody>
+                        <tr>
+                           <td rowspan="1" colspan="1">
+                              <p>
+                                 <span class="bf">Mean (SD)</span>         
+                              </p>
+                           </td>
+                           <td rowspan="1" colspan="1">
+                              <p>
+                                 <span class="bf">Intensity</span>       
+                              </p>
+                           </td>
+                           <td rowspan="1" colspan="1">
+                              <p>
+                                 <span class="bf">Direction</span>  
+                              </p>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td rowspan="1" colspan="1">
+                              <p>Scene 2: Volcano</p>
+                           </td>
+                           <td rowspan="1" colspan="1">
+                              <p>-0.727 (0.8)   </p>
+                           </td>
+                           <td rowspan="1" colspan="1">
+                              <p>0.545 (0.8)</p>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td rowspan="1" colspan="1">
+                              <p>Scene 3: Fan       </p>
+                           </td>
+                           <td rowspan="1" colspan="1">
+                              <p>0.273 *** (1)</p>
+                           </td>
+                           <td rowspan="1" colspan="1">
+                              <p>1.545 (1.2)</p>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td rowspan="1" colspan="1">
+                              <p>Scene 5: Train     </p>
+                           </td>
+                           <td rowspan="1" colspan="1">
+                              <p>-0.727 (0.9)   </p>
+                           </td>
+                           <td rowspan="1" colspan="1">
+                              <p>0.909 (1.2)</p>
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>
+            </div>
+            <br class="table-break" clear="none">
+            <div class="table">
+               <a id="d57e1310" shape="rect"></a>
+               <p class="title">
+                  <strong>Table&nbsp;6.&nbsp;<a id="x1-310036" shape="rect"></a>Realism   of   warmth   intensity   and   warmth
+direction   (0:   optimal).   Codes   of   significane:   ***
+&lt; 0.05, ** p &lt; 0.1 </strong>
+               </p>
+               <div class="table-contents">
+                  <table summary="Realism   of   warmth   intensity   and   warmth
+direction   (0:   optimal).   Codes   of   significane:   ***
+&lt; 0.05, ** p &lt; 0.1 " border="1">
+                     <colgroup span="1">
+                        <col span="1">
+                        <col span="1">
+                        <col span="1">
+                     </colgroup>
+                     <tbody>
+                        <tr>
+                           <td rowspan="1" colspan="1">
+                              <p>
+                                 <span class="bf">Mean      (SD)</span>      
+                              </p>
+                           </td>
+                           <td rowspan="1" colspan="1">
+                              <p>
+                                 <span class="bf">Intensity</span>           
+                              </p>
+                           </td>
+                           <td rowspan="1" colspan="1">
+                              <p>
+                                 <span class="bf">Direction</span>  
+                              </p>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td rowspan="1" colspan="1">
+                              <p>Scene 1: Desert    </p>
+                           </td>
+                           <td rowspan="1" colspan="1">
+                              <p>-0.364 (0.8)       </p>
+                           </td>
+                           <td rowspan="1" colspan="1">
+                              <p>0.545 (1.3)</p>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td rowspan="1" colspan="1">
+                              <p>Scene 2: Volcano  </p>
+                           </td>
+                           <td rowspan="1" colspan="1">
+                              <p>-0.636 (0.8)       </p>
+                           </td>
+                           <td rowspan="1" colspan="1">
+                              <p>1.1 (1.4)    </p>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td rowspan="1" colspan="1">
+                              <p>Scene 4: Chimney</p>
+                           </td>
+                           <td rowspan="1" colspan="1">
+                              <p>-1.182 ** (0.75)</p>
+                           </td>
+                           <td rowspan="1" colspan="1">
+                              <p>1.0 (1.4)    </p>
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>
+            </div>
+            <br class="table-break" clear="none">
+            <p>Looking closer at the scenes, it becomes noticeable that
+in only one scene (Scene 3: Fan), the stimulus intensity is
+rated as being too strong compared with the other scenes
+(M = 0.273, SD = 1.0, p &lt; 0.05). Furthermore, the
+results concerning the wind direction indicate a trend to
+weaker results in this scene than to all other scenes (M
+= 1.545, SD = 1.2, p = 0.1). This finding could be
+caused by a gap between visual and wind stimuli: The
+participant perceived the wind before being able to
+recognize the virtual fan. So there is no explanation for the
+sudden appearance of the wind. Therefore, the overall
+realism of the stimulus is rated worse, because the
+visual stimulus is more important when perceiving the
+scene.</p>
+            <p>For Scene 4 (Chimney), slightly worse results concerning
+the intensity (M = -1.182, SD=0.75, p = 0.618) were
+reported. Two reasons seem possible: (1) The overall
+intensity is too low compared with other scenes or (2) the
+visual direction of the stimulus contrasts with the
+perceived direction (visual direction: from the front,
+position of the infrared lamps: on top of the user). Both
+hypothesis can neither be verified nor falsified: The fire's
+intensity is comparable with the stimulus intensities found
+in the other scenes. Nevertheless, the distance toward the
+virtual warmth source is slightly greater than the distance
+implemented in the other scenes. For verifying the second
+hypothesis, the results concerning the direction should
+be worse for Scene 4 (Chimney). The mean values
+are in fact slightly different, but these results are not
+significant. Thats why further studies should evaluate a
+necessary analogy between visual and wind/warmth
+stimuli.</p>
+            <p>Concerning the perceived presence, no significant
+results were recognized as expected due to the small
+number of participants. Nevertheless, a trend can be
+observed for Scene 1 (Desert) and Scene 2 (Volcano): Here,
+the results are slightly better when using wind and
+warmth (<em>M<sup>desertWW</sup> = 4.9</em>, <em>M<sup>desertControl</sup> = 3.4</em>,
+<em>p<sup>desert</sup> = 0.086</em>, <em>M<sup>volcanoWW</sup> = 6.5</em>, <em>M<sup>volcanoControl</sup> = 5.3</em>,
+<em>p<sup>volcano</sup> = 0.13</em>). See figure  <a class="ulink" href="#x1-3100413" target="_top" shape="rect">13</a> for a visualization of the
+results.</p>
+            <div class="figure">
+               <a id="d57e1408" shape="rect"></a>
+               <p class="title">
+                  <strong>Figure&nbsp;13.&nbsp;<a id="x1-3100413" shape="rect"></a>Figure 13:    Subjective   measured   presence   for   the
+presented scenes compared between both conditions:
+control    (baseline)    and    wind/warmth.    Codes    of
+significance: *** p &lt; 0.05, ** p &lt; 0.1, * p &lt; 0.15</strong>
+               </p>
+               <div class="figure-contents">
+                  <img src="fedoraxml_body_files/figure13.jpg" alt="Figure 13: Subjective measured presence for the presented scenes compared between both conditions: control (baseline) and wind/warmth. Codes of significance: *** p &lt; 0.05, ** p &lt; 0.1, * p &lt; 0.15" width="500px">
+               </div>
+            </div>
+            <br class="figure-break" clear="none">
+            <p>Finally, our results indicate a high level of user
+experience and enforce the assumption that the realized
+wind and warmth simulation is able to enhance the
+perceivable presence. These results suggest further
+investigations and more detailed evaluations.</p>
+         </div>
+      </div>
+   </div>
+   <div class="section" lang="en">
+      <div class="titlepage">
+         <h2 class="title" style="clear: both">
+            <a id="d57e1415" shape="rect"></a>7.&nbsp;
+<a id="x1-320007" shape="rect"></a>Conclusion and Future Work</h2>
+      </div>
+      <p>This paper described a setup to create wind and warmth
+simulations in a Virtual Reality environment. First,
+general requirements to simulate wind and warmth
+in the context of VR were developed and analyzed.
+Further, possible hardware devices to produce the
+stimuli were discussed and the best hardware for the
+described CAVE environment was chosen. Afterwards, the
+setup of the hardware was described with respect to the
+requirements. A software model to represent the stimuli
+inside the VR framework and for the communication
+between VR framework and hardware was developed.
+Furthermore, the system was evaluated with respect to
+technical details, namely possible disturbances of
+hardware, latency and real-time aspects, hardware
+performance and quality of the framework to determine
+direction and intensity of the stimuli. Finally, a pilot study
+suggests a rise in user experience and also a trend
+concerning a rise of perceivable presence which could be
+realized by the system. The presented system is - to our
+knowledge - one of the most extensive, most flexible and
+best evaluated systems to create wind and warmth
+stimuli in Virtual Reality applications designed for
+CAVE environments. Furthermore, the low cost system
+(approx. 2200 Euro) is not only applicable for the
+described CAVE environment, but also for example
+for HMD setups. Table  <a class="ulink" href="#x1-320017" target="_top" shape="rect">7</a>  summarizes the system's
+properties.</p>
+      <div class="table">
+         <a id="d57e1425" shape="rect"></a>
+         <p class="title">
+            <strong>Table&nbsp;7.&nbsp;<a id="x1-320017" shape="rect"></a>Overview of wind and warmth system.</strong>
+         </p>
+         <div class="table-contents">
+            <table summary="Overview of wind and warmth system." border="1">
+               <colgroup span="1">
+                  <col span="1">
+                  <col span="1">
+                  <col span="1">
+               </colgroup>
+               <tbody>
+                  <tr>
+                     <td rowspan="1" colspan="1">
+                        <p>
+                           <span class="bf">                                             
+                        </span></p>
+                     </td>
+                     <td rowspan="1" colspan="1">
+                        <p>
+                           <span class="bf">Wind System</span>                                       
+                        </p>
+                     </td>
+                     <td rowspan="1" colspan="1">
+                        <p>
+                           <span class="bf">Warmth System</span>                                                                                      
+                        </p>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td rowspan="1" colspan="1">
+                        <p>
+                           <span class="it">Number of devices</span>                                                         
+                        </p>
+                     </td>
+                     <td rowspan="1" colspan="1">
+                        <p>8                                                          </p>
+                     </td>
+                     <td rowspan="1" colspan="1">
+                        <p>6                                                                                                              </p>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td rowspan="1" colspan="1">
+                        <p>
+                           <span class="it">Height of mounting</span>                                                        
+                        </p>
+                     </td>
+                     <td rowspan="1" colspan="1">
+                        <p> 2.5 m                                                  </p>
+                     </td>
+                     <td rowspan="1" colspan="1">
+                        <p> 2.3 m (during tech. mesurements, variable according to user's height)</p>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td rowspan="1" colspan="1">
+                        <p>
+                           <span class="it">Covered area</span>                                                                 
+                        </p>
+                     </td>
+                     <td rowspan="1" colspan="1">
+                        <p>3 m x 3 m                                              </p>
+                     </td>
+                     <td rowspan="1" colspan="1">
+                        <p>3 m x 3 m                                                                                                  </p>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td rowspan="1" colspan="1">
+                        <p>
+                           <span class="it">Max. virtual sources without influencing performance</span>
+                        </p>
+                     </td>
+                     <td rowspan="1" colspan="1">
+                        <p>150-200                                               </p>
+                     </td>
+                     <td rowspan="1" colspan="1">
+                        <p>150-200                                                                                                   </p>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td rowspan="1" colspan="1">
+                        <p>
+                           <span class="it">Cost additional hardware</span>                                              
+                        </p>
+                     </td>
+                     <td rowspan="1" colspan="1">
+                        <p> 250 Euro (adapted DMX Dimpacks)</p>
+                     </td>
+                     <td rowspan="1" colspan="1">
+                        <p> 250 Euro (DMX Dimpacks and temperature sensors)                         </p>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td rowspan="1" colspan="1">
+                        <p>
+                           <span class="it">Cost mounting</span>                                                               
+                        </p>
+                     </td>
+                     <td rowspan="1" colspan="1">
+                        <p> 390 Euro                                            </p>
+                     </td>
+                     <td rowspan="1" colspan="1">
+                        <p> 800 Euro (incl. additional traverses)                                                    </p>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td rowspan="1" colspan="1">
+                        <p>
+                           <span class="it">Total cost</span>                                                                       
+                        </p>
+                     </td>
+                     <td rowspan="1" colspan="1">
+                        <p> 1120 Euro                                          </p>
+                     </td>
+                     <td rowspan="1" colspan="1">
+                        <p> 1110 Euro                                                                                             </p>
+                     </td>
+                  </tr>
+               </tbody>
+            </table>
+         </div>
+      </div>
+      <br class="table-break" clear="none">
+      <p>Although the system's capabilities are satisfactory and
+the reported results are promising, there is a large potential
+for possible further research. Two areas are in the center of
+future tasks: Improvements of the system itself and more
+detailed large-scale evaluations.</p>
+      <p>Starting with system improvements, virtual occlusions
+are handled quite rudimentarily: A stimulus is occluded
+or it is not. But what about for example concerning
+the difference between a fire which is occluded by a
+thick concrete wall (e.g. a tunnel wall) and a fire
+which is occluded simply by a pane of glass (e.g. a
+window of a car)? To be able to simulate these situations,
+materials must be equipped with a kind of wind/warmth
+transparency factor alpha. To handle the occlusions itself,
+algorithms well known from the area of computer graphics
+(e.g. shadowing) could be used. At the moment, warmth
+sources are only bound to one single sphere. Binding
+them to more complex objects, e.g. arbitrary meshes
+would make the design of complex scenes, e.g. a
+warm pipeline or the warmth of a virtual large scale
+fire.</p>
+      <p>Concerning the user experience and especially the
+achieved level of presence, the presented results are
+quite promising. Nevertheless, a detailed study with
+more participants and more detailed questionnaires is
+necessary. Furthermore, measurement of heart rate and
+skin conductance as applied by Slater et al. in [<span class="citation">
+            <a class="xref" href="#XAnalysisOfPhysiologicalResponsesToASocialSituationInAnImmersiveVirtualEnvironment" title="SGE06" shape="rect">SGE06</a>
+         </span>] is
+desirable for quantifying the perceived presence and for
+gaining significant results. Here, it is planned to analyze
+how necessary a close correlation of wind/warmth stimuli
+and the visual output is. How closely need wind and
+warmth stimuli to be correlated with visual stimuli?
+How does presence decrease in relation to increased
+distance between wind and warmth and the correlated
+visual output? Also, a determination of crossmodal
+influences between wind and warmth stimuli presented
+simultaneously would seem interesting. We believe that
+further advancement in this direction will make wind and
+temperature sensations as common in future Virtual
+Reality as sound is today.</p>
+   </div>
+   <div class="section" lang="en">
+      <div class="titlepage">
+         <h2 class="title" style="clear: both">
+            <a id="d57e1542" shape="rect"></a>8.&nbsp;
+<a id="x1-330008" shape="rect"></a>Acknowledgments</h2>
+      </div>
+      <p>The authors would like to thank
+Nico Lüdike for his technical work in preparing our
+previous approach for the wind system.</p>
+   </div>
+   <div class="bibliography">
+      <div class="titlepage">
+         <h2 class="title">
+            <a id="d57e1549" shape="rect"></a>Bibliography</h2>
+      </div>
+      <div class="bibliomixed">
+         <a id="Xburdea1996force" shape="rect"></a>
+         <p class="bibliomixed">[Bur96] 
+<span class="bibliomset">
+
+               <span class="author">
+                  <span class="firstname">Grigore</span>
+                  <span class="othername">C.</span>
+                  <span class="surname">Burdea</span></span>
+               <em><a href="http://www.digibib.net/openurl?sid=hbz:dipp&amp;genre=book&amp;aulast=Burdea&amp;aufirst=Grigore&amp;title=&amp;isbn=0-471-02141-5&amp;date=1996" target="_blank">Force and touch feedback for virtual reality</a></em>
+               <span class="pubdate">1996</span>
+               <span class="publisher">
+                  <span class="publishername">Wiley</span>
+               </span>
+               <span class="address">New York, NY</span>
+               <span class="isbn">0-471-02141-5</span>
+            </span>
+         </p>
+      </div>
+      <div class="bibliomixed">
+         <a id="XCampbell" shape="rect"></a>
+         <p class="bibliomixed">[CRT09] 
+<span class="bibliomset">
+
+               <span class="authorgroup">
+                  <span class="author">
+                     <span class="firstname">Neil</span>
+                     <span class="othername">A.</span>
+                     <span class="surname">Campbell</span></span>
+                  <span class="author">
+                     <span class="firstname">Jane</span>
+                     <span class="othername">B.</span>
+                     <span class="surname">Reece</span></span>
+                  <span class="author">
+                     <span class="firstname">Martha</span>
+                     <span class="othername">R.</span>
+                     <span class="surname">Taylor</span></span></span>
+               <em><a href="http://www.digibib.net/openurl?sid=hbz:dipp&amp;genre=book&amp;aulast=Campbell&amp;aufirst=Neil&amp;title=&amp;isbn=0-321-52650-3&amp;date=2009" taraget="_blank">Biology: Concepts and connections</a></em>
+               <span class="pubdate">2009</span>
+               <span class="publisher">
+                  <span class="publishername">Pearson Education</span>
+               </span>
+               <span class="address">San Francisco, Calif.</span>
+               <span class="isbn">0-321-52650-3</span>
+
+
+            </span>
+         </p>
+      </div>
+      <div class="bibliomixed">
+         <a id="Xcardin" shape="rect"></a>
+         <p class="bibliomixed">[CTV07] 
+<span class="bibliomset">
+
+               <span class="authorgroup">
+                  <span class="author">
+                     <span class="firstname">Sylvain</span>
+                     <span class="surname">Cardin</span></span>
+                  <span class="author">
+                     <span class="firstname">Daniel</span>
+                     <span class="surname">Thalmann</span></span>
+                  <span class="author">
+                     <span class="firstname">Frederic</span>
+                     <span class="surname">Vexo</span></span></span>
+               <em><a href="http://www.digibib.net/openurl?sid=hbz:dipp&amp;genre=article&amp;aulast=Cardin&amp;aufirst=Sylvain&amp;atitle=Head+mounted+wind&amp;title=proceeding+of+the+20th+annual+conference+on+Computer+Animation+and+Social+Agents+CASA2007&amp;date=2007" target="_blank">Head mounted wind</a></em></span>
+            <span class="bibliomset">
+               proceeding of the 20th annual conference on Computer Animation and Social Agents (CASA2007),&nbsp;
+               <span class="pubdate">2007</span>
+               <span class="bibliomisc">pp. 101&#8212;108</span>.
+            </span>
+
+         </p>
+      </div>
+      <div class="bibliomixed">
+         <a id="Xdionisio" shape="rect"></a>
+         <p class="bibliomixed">[Dio97a] 
+<span class="bibliomset">
+
+               <span class="author">
+                  <span class="firstname">José</span>
+                  <span class="surname">Dionisio</span></span>
+               <em><a href="http://www.digibib.net/openurl?sid=hbz:dipp&amp;genre=article&amp;aulast=Dionisio&amp;aufirst=Jose&amp;atitle=Temperature+feedback+in+virtual+environments&amp;title=Proceedings+of+SPIE+Advanced+Imaging+and+Network+Technologies&amp;date=1997" target="_blank">Temperature feedback in virtual environments</a></em></span>
+            <span class="bibliomset">
+               Proceedings of SPIE Advanced Imaging and Network Technologies,&nbsp;
+               <span class="pubdate">1997</span>
+               <span class="volumenum">Vol. 2949</span>,&nbsp;
+               <span class="pagenums">pp. 233&#8212;243</span>
+               <span class="bibliomisc"><a href="http://dx.doi.org/10.1117/12.266357" target="_blank">DOI 10.1117/12.266357</a></span>.
+            </span>
+
+         </p>
+      </div>
+      <div class="bibliomixed">
+         <a id="XVirtualHell" shape="rect"></a>
+         <p class="bibliomixed">[Dio97b] 
+<span class="bibliomset">
+
+               <span class="author">
+                  <span class="firstname">José</span>
+                  <span class="surname">Dionisio</span></span>
+<em><a href="http://www.digibib.net/openurl?sid=hbz:dipp&amp;genre=article&amp;aulast=Dionisio&amp;aufirst=Jose&amp;title=&amp;atitle=Virtual+Hell+A+Trip+Through+the+Flames&amp;issn=0272-1716&amp;date=1997&amp;volume=1&amp;number=3" target="_blank">Virtual Hell: A Trip Through the Flames</a></em></span>
+            <span class="bibliomset">
+               IEEE Computer Graphics and Applications,&nbsp;
+               <span class="volumenum">17</span>
+               <span class="pubdate">1997</span>
+               <span class="issuenum">3</span>
+               <span class="pagenums">11&#8212;14</span>
+               <span class="bibliomisc"><a href="http://dx.doi.org/10.1109/38.586012" target="_blank">DOI 10.1109/38.586012</a></span>,&nbsp;
+               <span class="issn">0272-1716</span>
+            </span>
+
+         </p>
+      </div>
+      <div class="bibliomixed">
+         <a id="XvrScooter" shape="rect"></a>
+         <p class="bibliomixed">[DJ06] 
+<span class="bibliomset">
+
+               <span class="authorgroup">
+                  <span class="author">
+                     <span class="firstname">Leonidas</span>
+                     <span class="surname">Deligiannidis</span></span>
+                  <span class="author">
+                     <span class="firstname">Robert</span>
+                     <span class="othername">J.</span>
+                     <span class="othername">K.</span>
+                     <span class="surname">Jacob</span></span></span>
+               <em><a href="http://www.digibib.net/openurl?sid=hbz:dipp&amp;genre=proceeding&amp;aulast=Deligiannidis&amp;aufirst=Leonidas&amp;title=Symposium+on+3D+User+Interfaces+3DUI+2006&amp;isbn=1-4244-0225-5&amp;date=2006" target="_blank">The VR Scooter: Wind and Tactile Feedback Improve User Performance</a></em></span>
+            <span class="bibliomset">
+               Symposium on 3D User Interfaces (3DUI 2006),&nbsp;
+               <span class="pubdate">2006</span>
+               <span class="publisher">
+                  <span class="publishername">IEEE</span>
+               </span>
+               <span class="pagenums">pp. 143&#8212;150</span>
+               <span class="bibliomisc"><a href="http://dx.doi.org/10.1109/VR.2006.131" target="_blank">DOI 10.1109/VR.2006.131</a></span>,&nbsp;
+               <span class="isbn">1-4244-0225-5</span>
+            </span>
+
+         </p>
+      </div>
+      <div class="bibliomixed">
+         <a id="Xdinh1999evaluating" shape="rect"></a>
+         <p class="bibliomixed">[DNH99] 
+<span class="bibliomset">
+
+               <span class="authorgroup">
+                  <span class="author">
+                     <span class="firstname">Huong</span>
+                     <span class="othername">Q.</span>
+                     <span class="surname">Dinh</span></span>
+                  <span class="author">
+                     <span class="firstname">Walker</span>
+                     <span class="surname">Neff</span></span>
+                  <span class="author">
+                     <span class="firstname">Larry</span>
+                     <span class="othername">F.</span>
+                     <span class="surname">Hodges</span></span>
+                  <span class="author">
+                     <span class="firstname">Chang</span>
+                     <span class="surname">Song</span></span>
+                  <span class="author">
+                     <span class="firstname">Akira</span>
+                     <span class="surname">Kobayashi</span></span></span>
+
+               <em><a href="http://www.digibib.net/openurl?sid=hbz:dipp&amp;genre=proceeding&amp;aulast=Dinh&amp;aufirst=Huong&amp;title=IEEE+Virtual+Reality+1999+Proceedings&amp;isbn=0-7695-0093-5&amp;date=1999" target="_blank">Evaluating the importance of multi-sensory input on memory and the sense of presence in virtual environments</a></em></span>
+            <span class="bibliomset">
+               IEEE Virtual Reality 1999. Proceedings;&nbsp;
+               <span class="pubdate">1999</span>
+               <span class="pagenums">pp. 222&#8212;228</span>
+               <span class="bibliomisc"><a href="http://dx.doi.org/10.1109/VR.1999.756955" target="_blank">DOI 10.1109/VR.1999.756955</a>,&nbsp;</span>
+               <span class="isbn">0-7695-0093-5</span>
+            </span>
+         </p>
+      </div>
+      <div class="bibliomixed">
+         <a id="XAcousticallyEnriched" shape="rect"></a>
+         <p class="bibliomixed">[FW12] 
+<span class="bibliomset">
+
+               <span class="authorgroup">
+                  <span class="author">
+                     <span class="firstname">Julia</span>
+                     <span class="surname">Fröhlich</span></span>
+                  <span class="author">
+                     <span class="firstname">Ipke</span>
+                     <span class="surname">Wachsmuth</span></span></span>
+               <em><a href="http://www.digibib.net/openurl?sid=hbz:dipp&amp;genre=proceeding&amp;aulast=Froehlich&amp;aufirst=Julia&amp;title=IEEE+Virtual+Reality+Short+Papers+and+Posters+VRW+2012&amp;isbn=978-1-4673-1247-9&amp;date=2012" target="_blank">Acoustically enriched virtual worlds with minimum effort</a></em>
+               Virtual Reality Short Papers and Posters (VRW), 2012 IEEE,&nbsp; 
+               <span class="pubdate">2012</span>
+               <span class="pagenums">pp. 147&#8212;148</span>
+               <span class="bibliomisc"><a href="http://dx.doi.org/10.1109/VR.2012.6180924" target="_blank">10.1109/VR.2012.6180924</a></span>,&nbsp;
+               <span class="isbn">978-1-4673-1247-9</span>
+            </span>
+         </p>
+      </div>
+      <div class="bibliomixed">
+         <a id="XVisualAuditoryHaptic" shape="rect"></a>
+         <p class="bibliomixed">[FW13] 
+<span class="bibliomset">
+
+               <span class="authorgroup">
+                  <span class="author">
+                     <span class="firstname">Julia</span>
+                     <span class="surname">Fröhlich</span></span>
+                  <span class="author">
+                     <span class="firstname">Ipke</span>
+                     <span class="surname">Wachsmuth</span></span></span>
+               <em><a href="http://www.digibib.net/openurl?sid=hbz:dipp&amp;genre=proceeding&amp;aulast=Froehlich&amp;aufirst=Julia&amp;title=Virtual+Augmented+and+Mixed+Reality.+Designing+and+Developing+Augmented+and+Virtual+Environments&amp;isbn=978-3-642-39405-8&amp;date=2013" target="_blank">The Visual, the Auditory and the Haptic - A User Study on Combining Modalities in Virtual Worlds</a></em></span>
+            <span class="bibliomset">
+               Virtual Augmented and Mixed Reality. Designing and Developing Augmented and Virtual Environments,&nbsp;
+               <span class="pubdate">2013</span>
+               <span class="pagenums">pp. 159&#8212;168</span>
+               <span class="bibliomisc"><a href="http://dx.doi.org/10.1007/978-3-642-39405-8_19" target="_blank">DOI 10.1007/978-3-642-39405-8_19</a>,&nbsp;</span>
+               <span class="isbn">978-3-642-39405-8</span>
+
+
+            </span>
+
+         </p>
+      </div>
+      <div class="bibliomixed">
+         <a id="Xgray" shape="rect"></a>
+         <p class="bibliomixed">[GSM82] 
+<span class="bibliomset">
+
+               <span class="authorgroup">
+                  <span class="author">
+                     <span class="firstname">Lincoln</span>
+                     <span class="surname">Gray</span></span>
+                  <span class="author">
+                     <span class="firstname">Joseph</span>
+                     <span class="othername">C.</span>
+                     <span class="surname">Stevens</span></span>
+                  <span class="author">
+                     <span class="firstname">Lawrence</span>
+                     <span class="othername">E.</span>
+                     <span class="surname">Marks</span></span></span>
+<em><a href="http://www.digibib.net/openurl?sid=hbz:dipp&amp;genre=article&amp;aulast=Gray&amp;aufirst=Lincoln&amp;title=&amp;atitle=Thermal+stimulus+thresholds:+Sources+of+variability&amp;issn=0031-9384&amp;date=1982&amp;volume=2&amp;number=2" target="_blank">Thermal stimulus thresholds: Sources of variability</a></em></span>
+            <span class="bibliomset">
+               Physiology &amp; Behavior,&nbsp;
+               <span class="volumenum">29</span>
+               <span class="pubdate">1982</span>
+               <span class="issuenum">2</span>
+               <span class="pagenums">355&#8212;360</span>
+               <span class="bibliomisc"><a href="http://dx.doi.org/10.1016/0031-9384%2882%2990026-9" target="_blank">DOI 10.1016/0031-9384(82)90026-9</a>,&nbsp;</span>
+               <span class="issn">0031-9384</span>
+            </span>
+         </p>
+      </div>
+      <div class="bibliomixed">
+         <a id="XHuelsmann2011" shape="rect"></a>
+         <p class="bibliomixed">[HDP11] 
+<span class="bibliomset">
+
+               <span class="authorgroup">
+                  <span class="author">
+                     <span class="firstname">Felix</span>
+                     <span class="surname">Hülsmann</span></span>
+                  <span class="author">
+                     <span class="firstname">Timo</span>
+                     <span class="surname">Dankert</span></span>
+                  <span class="author">
+                     <span class="firstname">Thies</span>
+                     <span class="surname">Pfeiffer</span></span>
+               </span>
+               <span class="editor">
+                  <span class="firstname">C.-A.</span>
+                  <span class="surname">Bohn</span></span>
+               <span class="editor">
+                  <span class="firstname">S.</span>
+                  <span class="surname">Mostafawy</span></span>
+               <em><a href="http://www.digibib.net/openurl?sid=hbz:dipp&amp;genre=proceeding&amp;aulast=Huelsmann&amp;aufirst=Felix&amp;title=Virtuelle+und+Erweiterte+Realitaet+8+Workshop+der+GI-Fachgruppe+VR+AR&amp;isbn=978-3-8440-0394-9&amp;date=2011" target="_blank">Comparing Gaze-based and Manual Interaction in a Fast-paced Gaming Task in Virtual Reality</a></em></span>
+            <span class="bibliomset">
+               Virtuelle und Erweiterte Realität: 8. Workshop der GI-Fachgruppe VR/AR,&nbsp;
+               <span class="pubdate">2011</span>
+               <span class="publisher">
+                  <span class="publishername">Shaker</span>
+               </span>
+               <span class="address">Aachen</span>
+               <span class="pagenums">pp. 1&#8212;12</span>
+               <span class="isbn">978-3-8440-0394-9</span>
+            </span>
+
+         </p>
+      </div>
+      <div class="bibliomixed">
+         <a id="XHirotaHCII13" shape="rect"></a>
+         <p class="bibliomixed">[HIAI13] 
+<span class="bibliomset">
+
+               <span class="authorgroup">
+                  <span class="author">
+                     <span class="firstname">Koichi</span>
+                     <span class="surname">Hirota</span></span>
+                  <span class="author">
+                     <span class="firstname">Yoko</span>
+                     <span class="surname">Ito</span></span>
+                  <span class="author">
+                     <span class="firstname">Tomohiro</span>
+                     <span class="surname">Amemiya</span></span>
+                  <span class="author">
+                     <span class="firstname">Yasushi</span>
+                     <span class="surname">Ikei</span></span>
+               </span>
+               <span class="editor">
+                  <span class="firstname">Randall</span>
+                  <span class="surname">Shumaker</span></span>
+               <em><a href="http://www.digibib.net/openurl?sid=hbz:dipp&amp;genre=article&amp;aulast=Hirota&amp;aufirst=Koichi&amp;title=Virtual+Augmented+and+Mixed+Reality+Systems+and+Applications&amp;atitle=Presentation+of+Odor+in+Multi-Sensory+Theater&amp;isbn=978-3-642-39419-5&amp;date=2013&amp;volume=8" target="_blank">Presentation of Odor in Multi-Sensory Theater</a></em></span>
+            <span class="bibliomset">
+               Virtual, Augmented and Mixed Reality. Systems and Applications,&nbsp;
+               <span class="pubdate">2013</span>
+               <span class="publisher">
+                  <span class="publishername">Springer,&nbsp;Berlin Heidelberg</span>
+               </span>
+               <span class="pagenums">pp. 372&#8212;379</span>
+               <span class="bibliomisc"><a href="http://dx.doi.org/10.1007/978-3-642-39420-1_39" target="_blank">DOI 10.1007/978-3-642-39420-1_39</a>,&nbsp;</span>
+               <span class="isbn">978-3-642-39419-5</span>
+
+
+            </span>
+
+         </p>
+      </div>
+      <div class="bibliomixed">
+         <a id="XHuelsmann2013" shape="rect"></a>
+         <p class="bibliomixed">[HMFW13] 
+<span class="bibliomset">
+
+               <span class="authorgroup">
+                  <span class="author">
+                     <span class="firstname">Felix</span>
+                     <span class="surname">Hülsmann</span></span>
+                  <span class="author">
+                     <span class="firstname">Nikita</span>
+                     <span class="surname">Mattar</span></span>
+                  <span class="author">
+                     <span class="firstname">Julia</span>
+                     <span class="surname">Fröhlich</span></span>
+                  <span class="author">
+                     <span class="firstname">Ipke</span>
+                     <span class="surname">Wachsmuth</span></span></span>
+               <em><a href="http://www.digibib.net/openurl?sid=hbz:dipp&amp;genre=proceeding&amp;aulast=Huelsmann&amp;aufirst=Felix&amp;title=Virtuelle+und+Erweiterte+Realitaet+10+Workshop+der+GI-Fachgruppe+VR+AR&amp;isbn=978-3-8440-2211-7&amp;date=2013" target="_blank">Wind and Warmth in Virtual Reality - Requirements and Chances</a></em></span>
+            <span class="bibliomset">
+               Virtuelle und Erweiterte Realität: 10. Workshop der GI-Fachgruppe VR/AR,&nbsp;
+               <span class="pubdate">2013</span>
+               <span class="publisher">
+                  <span class="publishername">Shaker</span>
+               </span>
+               <span class="address">Aachen</span>
+               <span class="pagenums">pp. 133&#8212;144</span>
+               <span class="isbn">978-3-8440-2211-7</span>
+
+
+            </span>
+
+         </p>
+      </div>
+      <div class="bibliomixed">
+         <a id="Xhusung2010modelling" shape="rect"></a>
+         <p class="bibliomixed">[HMWK10] 
+<span class="bibliomset">
+
+               <span class="authorgroup">
+                  <span class="author">
+                     <span class="firstname">Stephan</span>
+                     <span class="surname">Husung</span></span>
+                  <span class="author">
+                     <span class="firstname">Robertas</span>
+                     <span class="surname">Mikalauskas</span></span>
+                  <span class="author">
+                     <span class="firstname">Christian</span>
+                     <span class="surname">Weber</span></span>
+                  <span class="author">
+                     <span class="firstname">Tobias</span>
+                     <span class="surname">Kästner</span></span></span>
+<em><a href="http://www.digibib.net/openurl?sid=hbz:dipp&amp;genre=article&amp;aulast=Husung&amp;aufirst=Stephan&amp;title=&amp;atitle=Modelling+of+sound+propagation+of+technical+systems+for+real-time+VR-applications&amp;issn=1392-1207&amp;date=2010&amp;number=4%2884%29" target="_blank">Modelling of sound propagation of technical systems for real-time VR-applications</a></em></span>
+            <span class="bibliomset">
+               Mechanika,&nbsp;
+               <span class="pubdate">2010</span>
+               <span class="issuenum">4(84)</span>
+               <span class="pagenums">33&#8212;37</span>
+               <span class="issn">1392-1207</span>
+
+
+            </span>
+
+         </p>
+      </div>
+      <div class="bibliomixed">
+         <a id="Xkojima2009" shape="rect"></a>
+         <p class="bibliomixed">[KHK09] 
+<span class="bibliomset">
+
+               <span class="authorgroup">
+                  <span class="author">
+                     <span class="firstname">Yuichiro</span>
+                     <span class="surname">Kojima</span></span>
+                  <span class="author">
+                     <span class="firstname">Yuki</span>
+                     <span class="surname">Hashimoto</span></span>
+                  <span class="author">
+                     <span class="firstname">Hiroyuki</span>
+                     <span class="surname">Kajimoto</span></span></span>
+
+               <em><a href="http://www.digibib.net/openurl?sid=hbz:dipp&amp;genre=proceeding&amp;aulast=Kojima&amp;aufirst=Yuichiro&amp;title=ACE+09+Proceedings+of+the+International+Conference+on+Advances+in+Computer+Enterntainment+Technology&amp;isbn=978-1-60558-864-3&amp;date=2009" target="_blank">A novel wearable device to present localized sensation of wind</a></em>
+            </span>
+            <span class="bibliomset">
+              ACE '09 Proceedings of the International Conference on Advances in Computer Enterntainment Technology,&nbsp;
+               <span class="pubdate">2009</span>
+               <span class="publisher">
+                  <span class="publishername">ACM</span>
+               </span>
+               <span class="address">New York, NY</span>
+               <span class="pagenums">pp. 61&#8212;65</span>
+               <span class="bibliomisc"><a href="http://dx.doi.org/10.1145/1690388.1690399" target="_blank">DOI 10.1145/1690388.1690399</a></span>,&nbsp;
+               <span class="isbn">978-1-60558-864-3</span>
+
+
+            </span>
+
+         </p>
+      </div>
+      <div class="bibliomixed">
+         <a id="XsimulatorSickness" shape="rect"></a>
+         <p class="bibliomixed">[KLBL93] 
+<span class="bibliomset">
+
+               <span class="authorgroup">
+                  <span class="author">
+                     <span class="firstname">Robert</span>
+                     <span class="othername">S.</span>
+                     <span class="surname">Kennedy</span></span>
+                  <span class="author">
+                     <span class="firstname">Norman</span>
+                     <span class="othername">E.</span>
+                     <span class="surname">Lane</span></span>
+                  <span class="author">
+                     <span class="firstname">Kevin</span>
+                     <span class="othername">S.</span>
+                     <span class="surname">Berbaum</span></span>
+                  <span class="author">
+                     <span class="firstname">Michael</span>
+                     <span class="othername">G.</span>
+                     <span class="surname">Lilienthal</span></span></span>
+<em><a href="http://www.digibib.net/openurl?sid=hbz:dipp&amp;genre=article&amp;aulast=Kennedy&amp;aufirst=Robert&amp;title=&amp;atitle=Simulator+Sickness+Questionnaire+An+enhanced+Method+for+Quantifiying+Simulator+Sickness&amp;issn=1050-8414&amp;date=1993&amp;volume=3&amp;number=3" target="_blank">Simulator Sickness Questionnaire: An enhanced Method for Quantifiying Simulator Sickness</a></em></span>
+            <span class="bibliomset">
+              The International Journal of Aviation Psychology,&nbsp;
+               <span class="volumenum">3</span>
+               <span class="pubdate">1993</span>
+               <span class="issuenum">3</span>
+               <span class="pagenums">203&#8212;220</span>
+               <span class="bibliomisc"><a href="http://dx.doi.org/10.1207/s15327108ijap0303_3" target="_blank">DOI 10.1207/s15327108ijap0303_3</a>,&nbsp;</span>
+               <span class="issn">1050-8414</span>
+
+
+            </span>
+
+         </p>
+      </div>
+      <div class="bibliomixed">
+         <a id="Xkulkarni2012design" shape="rect"></a>
+         <p class="bibliomixed">[KMD12] 
+<span class="bibliomset">
+
+               <span class="authorgroup">
+                  <span class="author">
+                     <span class="firstname">Sandip</span>
+                     <span class="othername">D.</span>
+                     <span class="surname">Kulkarni</span></span>
+                  <span class="author">
+                     <span class="firstname">Mark</span>
+                     <span class="othername">A.</span>
+                     <span class="surname">Minor</span></span>
+                  <span class="author">
+                     <span class="firstname">Mark</span>
+                     <span class="othername">W.</span>
+                     <span class="surname">Deaver</span></span>
+                  <span class="author">
+                     <span class="firstname">Eric</span>
+                     <span class="othername">R.</span>
+                     <span class="surname">Pardyjak</span></span>
+                  <span class="author">
+                     <span class="firstname">John</span>
+                     <span class="othername">M.</span>
+                     <span class="surname">Hollerbach</span></span></span>
+<em><a href="http://www.digibib.net/openurl?sid=hbz:dipp&amp;genre=article&amp;aulast=Kulkarni&amp;aufirst=Sandip&amp;title=&amp;atitle=Design,+sensing,+and+control+of+a+scaled+wind+tunnel+for+atmospheric+display&amp;issn=1083-4435&amp;date=2012&amp;volume=1&amp;number=4" target="_blank">Design, sensing, and control of a scaled wind tunnel for atmospheric display</a></em></span>
+            <span class="bibliomset">
+               IEEE/ASME Transactions on Mechatronics,&nbsp;
+               <span class="volumenum">17</span>
+               <span class="pubdate">2012</span>
+               <span class="issuenum">4</span>
+               <span class="pagenums">635&#8212;645</span>
+               <span class="bibliomisc"><a href="http://dx.doi.org/10.1109/TMECH.2011.2113353" target="_blank">10.1109/TMECH.2011.2113353</a>,&nbsp;</span>
+               <span class="issn">1083-4435</span>
+
+
+            </span>
+
+         </p>
+      </div>
+      <div class="bibliomixed">
+         <a id="Xlehmann" shape="rect"></a>
+         <p class="bibliomixed">[LGWS09] 
+<span class="bibliomset">
+
+               <span class="authorgroup">
+                  <span class="author">
+                     <span class="firstname">Anke</span>
+                     <span class="surname">Lehmann</span></span>
+                  <span class="author">
+                     <span class="firstname">Christian</span>
+                     <span class="surname">Geiger</span></span>
+                  <span class="author">
+                     <span class="firstname">Björn</span>
+                     <span class="surname">Wöldecke</span></span>
+                  <span class="author">
+                     <span class="firstname">Jörg</span>
+                     <span class="surname">Stöcklein</span></span>
+               </span>
+               <em><a href="http://www.digibib.net/openurl?sid=hbz:dipp&amp;genre=proceeding&amp;aulast=Lehmann&amp;aufirst=Anke&amp;title=IEEE+Symposium+on+3D+User+Interfaces+3DUI+2009&amp;isbn=978-1-4244-3965-2&amp;date=2009" target="_blank">Poster: Design and Evaluation of 3D Content with Wind Output</a></em></span>
+            <span class="bibliomset">
+               IEEE Symposium on 3D User Interfaces (3DUI 2009),&nbsp;
+               <span class="pubdate">2009</span>
+               <span class="pagenums">pp. 152&#8212;152</span>
+               <span class="bibliomisc"><a href="http://dx.doi.org/10.1109/3DUI.2009.4811231" target="_blank">DOI 10.1109/3DUI.2009.4811231</a>,&nbsp;</span>
+               <span class="isbn">978-1-4244-3965-2</span>
+            </span>
+
+         </p>
+      </div>
+      <div class="bibliomixed">
+         <a id="Xlarsson2001ecological" shape="rect"></a>
+         <p class="bibliomixed">[LVK01] 
+<span class="bibliomset">
+
+               <span class="authorgroup">
+                  <span class="author">
+                     <span class="firstname">Pontus</span>
+                     <span class="surname">Larsson</span></span>
+                  <span class="author">
+                     <span class="firstname">Daniel</span>
+                     <span class="surname">Västfjäll</span></span>
+                  <span class="author">
+                     <span class="firstname">Mendel</span>
+                     <span class="surname">Kleiner</span></span></span>
+               <em><a href="http://www.digibib.net/openurl?sid=hbz:dipp&amp;genre=proceeding&amp;aulast=Larsson&amp;aufirst=Pontus&amp;atitle=Ecological+acoustics+and+the+multi-modal+perception+of+rooms+real+and+unreal+experiences+of+auditory-visual+virtual+environments&amp;title=Proceedings+of+the+2001+International+Conference+on+Auditory+Display+ICAD+2001&amp;date=2001" target="_blank">Ecological
+ acoustics and the multi-modal perception of rooms: real and unreal 
+experiences of auditory-visual virtual environments</a></em></span>
+            <span class="bibliomset">
+               Proceedings of the 2001 International Conference on Auditory Display (ICAD 2001),&nbsp;
+               <span class="pubdate">2001</span>
+               <span class="bibliomisc">pp. 245&#8212;249.</span>
+
+            </span>
+
+         </p>
+      </div>
+      <div class="bibliomixed">
+         <a id="XVRARNachfrage" shape="rect"></a>
+         <p class="bibliomixed">[MKB13] 
+<span class="bibliomset">
+
+               <span class="authorgroup">
+                  <span class="author">
+                     <span class="firstname">Andreas</span>
+                     <span class="surname">Mühlberger</span></span>
+                  <span class="author">
+                     <span class="firstname">Max</span>
+                     <span class="surname">Kinateder</span></span>
+                  <span class="author">
+                     <span class="firstname">Johanna</span>
+                     <span class="surname">Brütting</span></span>
+                  <span class="author">
+                     <span class="firstname">Silke</span>
+                     <span class="surname">Eder</span></span>
+                  <span class="author">
+                     <span class="firstname">Mathias</span>
+                     <span class="surname">Müller</span></span>
+                  <span class="author">
+                     <span class="firstname">Paul</span>
+                     <span class="surname">Pauli</span></span>
+               </span>
+
+               <em><a href="http://www.digibib.net/openurl?sid=hbz:dipp&amp;genre=proceeding&amp;aulast=Muehlberger&amp;aufirst=Andreas&amp;title=Virtuelle+und+Erweiterte+Realitaet+10.+Workshop+der+GI-Fachgruppe+VR/AR&amp;isbn=978-3-8440-2211-7&amp;date=2013" target="_blank">Influence of Information and Instructions on Human Behavior in Tunnel Accidents: A Virtual Reality Study</a></em></span>
+            <span class="bibliomset">
+               Virtuelle und Erweiterte Realität: 10. Workshop der GI-Fachgruppe VR/AR,&nbsp;
+               <span class="pubdate">2013</span>
+               <span class="publisher">
+                  <span class="publishername">Shaker</span>
+               </span>
+               <span class="address">Aachen</span>
+
+               <span class="pagenums">pp. 49&#8212;60</span>
+               <span class="isbn">978-3-8440-2211-7</span>
+
+
+            </span>
+
+         </p>
+      </div>
+      <div class="bibliomixed">
+         <a id="Xmoonkim" shape="rect"></a>
+         <p class="bibliomixed">[MK04] 
+<span class="bibliomset">
+
+               <span class="authorgroup">
+                  <span class="author">
+                     <span class="firstname">Taeyong</span>
+                     <span class="surname">Moon</span></span>
+                  <span class="author">
+                     <span class="firstname">Gerard</span>
+                     <span class="othername">J.</span>
+                     <span class="surname">Kim</span></span></span>
+
+               <em><a href="http://www.digibib.net/openurl?sid=hbz:dipp&amp;genre=proceeding&amp;aulast=Moon&amp;aufirst=Taeyong&amp;title=VRST+04+Proceedings+of+the+ACM+symposium+on+Virtual+reality+software+and+technology&amp;isbn=1-58113-907-1&amp;date=2004" target="_blank">Design and Evaluation of a Wind Display for Virtual Reality</a></em></span>
+            <span class="bibliomset">
+               VRST '04 Proceedings of the ACM symposium on Virtual reality software and technology,&nbsp;
+               <span class="pubdate">2004</span>
+               <span class="pagenums">pp. 122&#8212;128</span>
+               <span class="bibliomisc"><a href="http://dx.doi.org/10.1145/1077534.1077558" target="_blank">DOI 10.1145/1077534.1077558</a>,&nbsp;</span>
+               <span class="isbn">1-58113-907-1</span>
+
+
+            </span>
+
+         </p>
+      </div>
+      <div class="bibliomixed">
+         <a id="XAnalysisOfPhysiologicalResponsesToASocialSituationInAnImmersiveVirtualEnvironment" shape="rect">
+         </a><p class="bibliomixed"><a id="XAnalysisOfPhysiologicalResponsesToASocialSituationInAnImmersiveVirtualEnvironment" shape="rect">[SGE06] 
+<span class="bibliomset">
+
+               <span class="authorgroup">
+                  <span class="author">
+                     <span class="firstname">Mel</span>
+                     <span class="surname">Slater</span></span>
+                  <span class="author">
+                     <span class="firstname">Christoph</span>
+                     <span class="surname">Guger</span></span>
+                  <span class="author">
+                     <span class="firstname">Guenter</span>
+                     <span class="surname">Edlinger</span></span>
+                  <span class="author">
+                     <span class="firstname">Robert</span>
+                     <span class="surname">Leeb</span></span>
+                  <span class="author">
+                     <span class="firstname">Gert</span>
+                     <span class="surname">Pfurtscheller</span></span>
+                  <span class="author">
+                     <span class="firstname">Angus</span>
+                     <span class="surname">Antley</span></span>
+                  <span class="author">
+                     <span class="firstname">Maia</span>
+                     <span class="surname">Garau</span></span>
+                  <span class="author">
+                     <span class="firstname">Andrea</span>
+                     <span class="surname">Brogni</span></span>
+                  <span class="author">
+                     <span class="firstname">Doron</span>
+                     <span class="surname">Friedman</span></span>
+</span>
+<em></em></span></a><em><a href="http://www.digibib.net/openurl?sid=hbz:dipp&amp;genre=article&amp;aulast=Slater&amp;aufirst=Mel&amp;title=&amp;atitle=Analysis+of+Physiological+Responses+to+a+Social+Situation+in+an+Immersive+Virtual+Environment&amp;issn=1054-7460&amp;date=2006&amp;volume=1&amp;number=5" target="_blank">Analysis of Physiological Responses to a Social Situation in an Immersive Virtual Environment</a></em>
+            <span class="bibliomset">
+               Presence: Teleoperators and Virtual Environments,&nbsp;
+               <span class="volumenum">15</span>
+               <span class="pubdate">2006</span>
+               <span class="issuenum">5</span>
+               <span class="pagenums">553&#8212;569</span>
+               <span class="bibliomisc"><a href="http://dx.doi.org/10.1162/pres.15.5.553" target="_blank">DOI 10.1162/pres.15.5.553</a>,&nbsp;</span>
+               <span class="issn">1054-7460</span>
+
+
+            </span>
+
+         </p>
+      </div>
+      <div class="bibliomixed">
+         <a id="Xsus" shape="rect"></a>
+         <p class="bibliomixed">[UCAS00] 
+<span class="bibliomset">
+
+               <span class="authorgroup">
+                  <span class="author">
+                     <span class="firstname">Martin</span>
+                     <span class="surname">Usoh</span></span>
+                  <span class="author">
+                     <span class="firstname">Ernest</span>
+                     <span class="surname">Catena</span></span>
+                  <span class="author">
+                     <span class="firstname">Sima</span>
+                     <span class="surname">Arman</span></span>
+                  <span class="author">
+                     <span class="firstname">Mel</span>
+                     <span class="surname">Slater</span></span></span>
+<em><a href="http://www.digibib.net/openurl?sid=hbz:dipp&amp;genre=article&amp;aulast=Usoh&amp;aufirst=Martin&amp;title=&amp;atitle=Using+Presence+Questionnaires+in+Reality&amp;issn=1054-7460&amp;date=2000&amp;volume=9&amp;number=5" target="_blank">Using Presence Questionnaires in Reality</a></em></span>
+            <span class="bibliomset">
+               Presence: Teleoperators and Virtual Environments,&nbsp;
+               <span class="volumenum">9</span>
+               <span class="pubdate">2000</span>
+               <span class="issuenum">5</span>
+               <span class="pagenums">497&#8212;503</span>
+               <span class="bibliomisc"><a href="http://dx.doi.org/10.1162/105474600566989" target="_blank">DOI 10.1162/105474600566989</a>,&nbsp;</span>
+               <span class="issn">1054-7460</span>
+
+
+            </span>
+
+         </p>
+      </div>
+      <div class="bibliomixed">
+         <a id="Xverlinden2013enhancement" shape="rect"></a>
+         <p class="bibliomixed">[VMV13] 
+<span class="bibliomset">
+
+               <span class="authorgroup">
+                  <span class="author">
+                     <span class="firstname">Jouke</span>
+                     <span class="othername">C.</span>
+                     <span class="surname">Verlinden</span></span>
+                  <span class="author">
+                     <span class="firstname">Fabian</span>
+                     <span class="othername">A.</span>
+                     <span class="surname">Mulder</span></span>
+                  <span class="author">
+                     <span class="firstname">Joris</span>
+                     <span class="othername">S.</span>
+                     <span class="surname">Vergeest</span></span>
+                  <span class="author">
+                     <span class="firstname">Anna</span>
+                     <span class="othername">de</span>
+                     <span class="surname">Jonge</span></span>
+                  <span class="author">
+                     <span class="firstname">Darina</span>
+                     <span class="surname">Krutiy</span></span>
+                  <span class="author">
+                     <span class="firstname">Zsuzsa</span>
+                     <span class="surname">Nagy</span></span>
+                  <span class="author">
+                     <span class="firstname">Bob</span>
+                     <span class="othername">J.</span>
+                     <span class="surname">Logeman</span></span>
+                  <span class="author">
+                     <span class="firstname">Paul</span>
+                     <span class="surname">Schouten</span></span></span>
+<em><a href="http://www.digibib.net/openurl?sid=hbz:dipp&amp;genre=article&amp;aulast=Verlinden&amp;aufirst=Jouke&amp;title=&amp;atitle=Enhancement+of+presence+in+a+virtual+sailing+environment+through+localized+wind+simulation&amp;date=2013&amp;volume=6" target="_blank">Enhancement of presence in a virtual sailing environment through localized wind simulation</a></em></span>
+            <span class="bibliomset">
+               Procedia Engineering,&nbsp;
+               <span class="volumenum">60</span>
+               <span class="pubdate">2013</span>
+
+               <span class="pagenums">435&#8212;441</span>
+               <span class="bibliomisc"><a href="http://dx.doi.org/10.1016/j.proeng.2013.07.050" target="_blank">DOI 10.1016/j.proeng.2013.07.050</a>.</span>
+            </span>
+         </p>
+      </div>
+      <div class="bibliomixed">
+         <a id="XWitmer1998" shape="rect"></a>
+         <p class="bibliomixed">[WS98] 
+	<span class="bibliomset">
+		
+		             <span class="authorgroup">
+                  <span class="author">
+                     <span class="firstname">Bob</span>
+                     <span class="othername">G.</span>
+                     <span class="surname">Witmer</span></span>
+                  <span class="author">
+                     <span class="firstname">Michael</span>
+                     <span class="othername">J.</span>
+                     <span class="surname">Singer</span></span></span>
+		<em><a href="http://www.digibib.net/openurl?sid=hbz:dipp&amp;genre=article&amp;aulast=Witmer&amp;aufirst=Bob&amp;title=&amp;atitle=Measuring+Presence+in+Virtual+Environments+A+Presence+Questionnaire&amp;issn=1054-7460&amp;date=1998&amp;volume=7&amp;number=3" target="_blank">Measuring presence in virtual environments: A presence questionnaire</a></em></span>
+	           <span class="bibliomset">
+		             Presence: Teleoperators and Virtual Environments,&nbsp;
+		             <span class="volumenum">7</span>
+		             <span class="pubdate">1998</span>
+		             <span class="issuenum">3</span>
+		             <span class="pagenums">225&#8212;240</span>
+<span class="bibliomisc"><a href="http://dx.doi.org/10.1162/105474698565686" target="_blank">DOI 10.1162/105474698565686</a>,&nbsp;</span>
+		             <span class="issn">1054-7460</span>
+	           </span>
+         </p>
+      </div>
+      <div class="bibliomixed">
+         <a id="Xweber2013visual" shape="rect"></a>
+         <p class="bibliomixed">[WSHP13] 
+<span class="bibliomset">
+
+               <span class="authorgroup">
+                  <span class="author">
+                     <span class="firstname">Bernhard</span>
+                     <span class="surname">Weber</span></span>
+                  <span class="author">
+                     <span class="firstname">Mikel</span>
+                     <span class="surname">Sagardia</span></span>
+                  <span class="author">
+                     <span class="firstname">Thomas</span>
+                     <span class="surname">Hulin</span></span>
+                  <span class="author">
+                     <span class="firstname">Carsten</span>
+                     <span class="surname">Preusche</span></span></span>
+               <em><a href="http://www.digibib.net/openurl?sid=hbz:dipp&amp;genre=proceeding&amp;aulast=Weber&amp;aufirst=Bernhard&amp;title=Virtual+Augmented+and+Mixed+Reality.+Designing+and+Developing+Augmented+and+Virtual+Environments&amp;isbn=978-3-642-39404-1&amp;date=2013" target="_blank">Visual,
+ Vibrotactile, and Force Feedback of Collisions in Virtual Environments:
+ Effects on Performance, Mental Workload and Spatial Orientation</a></em></span>
+            <span class="bibliomset">
+               Virtual Augmented and Mixed Reality. Designing and Developing Augmented and Virtual Environments,&nbsp;
+               <span class="pubdate">2013</span>
+               <span class="publisher">
+                  <span class="publishername">Springer</span>
+               </span>
+               <span class="address">Berlin Heidelberg</span>
+               <span class="pagenums">pp. 241&#8212;250</span>
+               <span class="bibliomisc"><a href="http://dx.doi.org/10.1007/978-3-642-39405-8_28" target="_blank">DOI 10.1007/978-3-642-39405-8_28</a>,&nbsp;</span>
+               <span class="isbn">978-3-642-39404-1</span>
+
+
+            </span>
+
+         </p>
+      </div>
+      <div class="bibliomixed">
+         <a id="XYanagida04" shape="rect"></a>
+         <p class="bibliomixed">[YKN04] 
+<span class="bibliomset">
+
+               <span class="authorgroup">
+                  <span class="author">
+                     <span class="firstname">Yasuyuki</span>
+                     <span class="surname">Yanagida</span></span>
+                  <span class="author">
+                     <span class="firstname">Shinjiro</span>
+                     <span class="surname">Kawato</span></span>
+                  <span class="author">
+                     <span class="firstname">Haruo</span>
+                     <span class="surname">Noma</span></span>
+                  <span class="author">
+                     <span class="firstname">Akira</span>
+                     <span class="surname">Tomono</span></span>
+                  <span class="author">
+                     <span class="firstname">N.</span>
+                     <span class="surname">Tesutani</span></span></span>
+               <em><a href="http://www.digibib.net/openurl?sid=hbz:dipp&amp;genre=proceeding&amp;aulast=Yanagida&amp;aufirst=Yasuyuki&amp;title=IEEE+Virtual+Reality+2004+Proceedings&amp;isbn=0-7803-8415-6&amp;date=2004" target="_blank">Projection based olfactory display with nose tracking</a></em></span>
+            <span class="bibliomset">
+               IEEE Virtual Reality, 2004. Proceedings,&nbsp;
+               <span class="pubdate">2004</span>
+               <span class="publisher">
+                  <span class="publishername">IEEE</span>
+               </span>
+               <span class="pagenums">pp. 43&#8212;50</span>
+               <span class="bibliomisc"><a href="http://dx.doi.org/10.1109/VR.2004.1310054" target="_blank">DOI 10.1109/VR.2004.1310054</a>,&nbsp;</span>
+               <span class="isbn">0-7803-8415-6</span>
+
+
+            </span>
+
+         </p>
+      </div>
+      <div class="bibliomixed">
+         <a id="XYamada" shape="rect"></a>
+         <p class="bibliomixed">[YYT06] 
+<span class="bibliomset">
+
+               <span class="authorgroup">
+                  <span class="author">
+                     <span class="firstname">Tomoya</span>
+                     <span class="surname">Yamada</span></span>
+                  <span class="author">
+                     <span class="firstname">Satoshi</span>
+                     <span class="surname">Yokoyama</span></span>
+                  <span class="author">
+                     <span class="firstname">Tomohiro</span>
+                     <span class="surname">Tanikawa</span></span>
+                  <span class="author">
+                     <span class="firstname">Koichi</span>
+                     <span class="surname">Hirota</span></span>
+                  <span class="author">
+                     <span class="firstname">Michitaka</span>
+                     <span class="surname">Hirose</span></span></span>
+
+               <em><a href="http://www.digibib.net/openurl?sid=hbz:dipp&amp;genre=proceeding&amp;aulast=Yamada&amp;aufirst=Tomoya&amp;title=Virtual+Reality+Conference+2006&amp;isbn=1-4244-0224-7&amp;date=2006" target="_blank">Wearable olfactory display: Using odor in outdoor environment</a></em></span>
+            <span class="bibliomset">
+               Virtual Reality Conference. 2006,&nbsp;
+               <span class="pubdate">2006</span>
+               <span class="publisher">
+                  <span class="publishername">IEEE</span>
+               </span>
+               <span class="pagenums">pp. 199&#8212;206</span>
+               <span class="bibliomisc"><a href="http://dx.doi.org/10.1109/VR.2006.147" target="_blank">DOI 10.1109/VR.2006.147</a>,&nbsp;</span>
+               <span class="isbn">1-4244-0224-7</span>
+
+
+            </span>
+
+         </p>
+      </div>
+   </div>
+   <div class="footnotes">
+      <br clear="none">
+      <hr width="100" align="left">
+      <div class="footnote">
+         <p>
+            <span class="footnoteReference">[<a id="ftn.d57e978" href="#d57e978" shape="rect">1</a>] </span>   The accuracy concerning the direction of a warmth source
+  does not need to be analyzed, because the warmth is too equally
+  distributed inside the CAVE area to promise worthwile results (see
+  section  <a class="ulink" href="#x1-220006.1.3" target="_top" shape="rect">6.1.3</a>).</p>
+      </div>
+      <div class="footnote">
+         <p>
+            <span class="footnoteReference">[<a id="ftn.d57e1003" href="#d57e1003" shape="rect">2</a>] </span>      The used wind hardware is unable to simulate any change on the y
+axis, therefore this axis was excluded.</p>
+      </div>
+   </div>
+</div>
+</body></html>
