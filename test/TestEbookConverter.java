@@ -144,7 +144,7 @@ public class TestEbookConverter {
 
     @Test
     public void testDownloader() throws IOException {
-	WebDownloader dwnl = new WebDownloader("http://www.tutorialspoint.com/java/java_string_substring.htm");
+	WebDownloader dwnl = new WebDownloader("https://www.jvrb.org/past-issues/11.2014/4075/fulltext/fedoraxml_body");
 	File dir = dwnl.download("tmp.html");
 	dir.deleteOnExit();
     }
@@ -165,7 +165,7 @@ public class TestEbookConverter {
 	    public void run() {
 		try {
 		    WebDownloader dwnl = new WebDownloader(
-			    "http://www.tutorialspoint.com/java/java_string_substring.htm");
+			    "https://www.jvrb.org/past-issues/11.2014/4075/fulltext/fedoraxml_body");
 		    File dir = dwnl.download("tmp.html");
 		} catch (Exception e) {
 		    e.printStackTrace();
@@ -176,7 +176,7 @@ public class TestEbookConverter {
 	    public void run() {
 		try {
 		    WebDownloader dwnl = new WebDownloader(
-			    "http://www.tutorialspoint.com/java/java_string_substring.htm");
+			    "https://www.jvrb.org/past-issues/11.2014/4075/fulltext/fedoraxml_body");
 		    File dir = dwnl.download("tmp.html");
 		} catch (Exception e) {
 		    e.printStackTrace();
@@ -187,7 +187,7 @@ public class TestEbookConverter {
 	    public void run() {
 		try {
 		    WebDownloader dwnl = new WebDownloader(
-			    "http://www.tutorialspoint.com/java/java_string_substring.htm");
+			    "https://www.jvrb.org/past-issues/11.2014/4075/fulltext/fedoraxml_body");
 		    File dir = dwnl.download("tmp.html");
 		} catch (Exception e) {
 		    e.printStackTrace();
@@ -198,7 +198,7 @@ public class TestEbookConverter {
 	    public void run() {
 		try {
 		    WebDownloader dwnl = new WebDownloader(
-			    "http://www.tutorialspoint.com/java/java_string_substring.htm");
+			    "https://www.jvrb.org/past-issues/11.2014/4075/fulltext/fedoraxml_body");
 		    File dir = dwnl.download("tmp.html");
 		} catch (Exception e) {
 		    e.printStackTrace();
@@ -209,7 +209,7 @@ public class TestEbookConverter {
 	    public void run() {
 		try {
 		    WebDownloader dwnl = new WebDownloader(
-			    "http://www.tutorialspoint.com/java/java_string_substring.htm");
+			    "https://www.jvrb.org/past-issues/11.2014/4075/fulltext/fedoraxml_body");
 		    File dir = dwnl.download("tmp.html");
 		} catch (Exception e) {
 		    e.printStackTrace();
@@ -220,7 +220,7 @@ public class TestEbookConverter {
 	    public void run() {
 		try {
 		    WebDownloader dwnl = new WebDownloader(
-			    "http://www.tutorialspoint.com/java/java_string_substring.htm");
+			    "https://www.jvrb.org/past-issues/11.2014/4075/fulltext/fedoraxml_body");
 		    File dir = dwnl.download("tmp.html");
 		} catch (Exception e) {
 		    e.printStackTrace();

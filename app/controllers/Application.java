@@ -18,6 +18,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package controllers;
 
 import java.io.File;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -29,7 +30,7 @@ import play.mvc.Result;
  * @author Raul Vasi
  *
  */
-public class Application extends Controller {
+public class Application extends MyController {
 
     /**
      * Die Web Seit wird als "tmp.html" lokal abgespeichert, in Ebook
@@ -44,6 +45,8 @@ public class Application extends Controller {
     public Result index(String url, String metadataUrl) {
 	try {
 	    if (url != null) {
+		if (!isWhitelisted(new URL(url).getHost()))
+		    return status(403, "ebookey is not allowed to access this url!");
 		WebDownloader dwnl = new WebDownloader(url);
 		dwnl.defineSubDirectory(getNanoTime());
 		File dir = dwnl.download("tmp.html");
@@ -67,6 +70,14 @@ public class Application extends Controller {
 	    throw new RuntimeException(e);
 	}
 	return ok(views.html.index.render(""));
+    }
+
+    private static boolean isWhitelisted(String host) {
+	for (String w : whitelist) {
+	    if (w.equals(host))
+		return true;
+	}
+	return false;
     }
 
     synchronized private long getNanoTime() {
