@@ -69,13 +69,11 @@ public class WebDownloader {
 
 	try {
 	    readprop();
-
 	    String downloadLocation = createDownloadLocation(outputpath);
-	    Document doc = Jsoup.connect(url).get();
+	    Document doc = Jsoup.parse(new URL(url).openStream(), "UTF-8", url);
+	    addEncoding(doc);
 	    Elements img = doc.getElementsByTag("img");
-
 	    try (ByteArrayInputStream bs = new ByteArrayInputStream(doc.outerHtml().getBytes("UTF-8"))) {
-
 		if (filename.endsWith(".html")) {
 		    IOUtil.copy(bs, new FileOutputStream(new File(downloadLocation + File.separator + filename)));
 		} else {
@@ -104,6 +102,13 @@ public class WebDownloader {
     public String defineSubDirectory(Long path) {
 	outputpath += path;
 	return outputpath;
+    }
+
+    private Document addEncoding(Document doc) {
+	Element e = doc.select("head").first();
+	e.prepend("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />");
+	return doc;
+
     }
 
     private void saveAsFile(Response resultImageResponse, File file) {

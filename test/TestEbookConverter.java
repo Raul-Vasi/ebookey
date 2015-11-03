@@ -2,6 +2,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Properties;
 
 import org.jsoup.Jsoup;
@@ -54,7 +56,7 @@ public class TestEbookConverter {
     @Test
     public void test_ebook_result() {
 	try {
-	    String inputDirectory = Thread.currentThread().getContextClassLoader().getResource("epub").getPath();
+	    String inputDirectory = Thread.currentThread().getContextClassLoader().getResource("Epublib").getPath();
 	    EbookConverter conv = new EbookConverter(inputDirectory);
 	    File result = conv.convert("/tmp/rauls.epub");
 	    result.deleteOnExit();
@@ -108,14 +110,30 @@ public class TestEbookConverter {
     }
 
     @Test
-    public void testAll() throws FileNotFoundException, IOException {
-	WebDownloader dwnl = new WebDownloader(
-		"https://alkyoneus.hbz-nrw.de/dev/jahrgang-2015/ausgabe-1/2295/#fulltext");
+    public void test_withoutModsMetadata() throws FileNotFoundException, IOException {
+	WebDownloader dwnl = new WebDownloader("https://www.jvrb.org/past-issues/11.2014/4075/fulltext/fedoraxml_body");
 	dwnl.defineSubDirectory(System.nanoTime());
 	File dir = dwnl.download("tmp.html");
 	System.out.println(dir.getAbsolutePath());
 	// dir.deleteOnExit();
 	EbookConverter conv = new EbookConverter(dir.getAbsolutePath());
+
+	File result = conv.convert(dir + "/rauls.epub");
+	// result.deleteOnExit();
+	Assert.assertEquals(true, result.exists());
+	Assert.assertEquals(true, dir.exists());
+	System.out.println(result.toString());
+    }
+
+    @Test
+    public void test_withModsMetadata() throws FileNotFoundException, IOException {
+	WebDownloader dwnl = new WebDownloader("https://www.jvrb.org/past-issues/11.2014/4075/fulltext/fedoraxml_body");
+	dwnl.defineSubDirectory(System.nanoTime());
+	File dir = dwnl.download("index.html");
+	System.out.println(dir.getAbsolutePath());
+	// dir.deleteOnExit();
+	EbookConverter conv = new EbookConverter(dir.getAbsolutePath(),
+		new ModsParser("https://alkyoneus.hbz-nrw.de/dev/jahrgang-2015/ausgabe-1/2295/metadata/xml"));
 
 	File result = conv.convert(dir + "/rauls.epub");
 	// result.deleteOnExit();
@@ -257,6 +275,16 @@ public class TestEbookConverter {
 
 	File result = conv.convert("/tmp/rauls.epub");
 	Assert.assertEquals(true, result.exists());
+    }
+
+    @Test
+    public void addEnocdingTest() throws MalformedURLException, IOException {
+	String url = "https://www.jvrb.org/past-issues/11.2014/4075/fulltext/fedoraxml_body";
+	Document doc = Jsoup.parse(new URL(url).openStream(), "UTF-8", url);
+	Element e = doc.select("head").first();
+	e.prepend("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />");
+	// doc.select("head").add(e);
+	System.out.println(doc.select("head"));
     }
 
 }

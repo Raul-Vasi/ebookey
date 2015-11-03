@@ -40,7 +40,6 @@ public class EbookConverter {
 
     Book book = new Book();
     ModsParser parser = null;
-
     String source;
 
     /**
@@ -125,7 +124,7 @@ public class EbookConverter {
     void addChapter(File file) {
 	TOCset tocs = new TOCset();
 	tocs.insertTOCs(file, book);
-	parser.insertAllMetas(book);
+
     }
 
     // --------------------------------------------------------------------------------------------------------------------
@@ -142,6 +141,9 @@ public class EbookConverter {
 	    File destination = new File(targetFile);
 	    createBook(new File(source));
 	    createToc();
+	    if (parser != null) {
+		parser.insertAllMetas(book);
+	    }
 	    new EpubWriter().write(book, new FileOutputStream(destination));
 	    return destination;
 	} catch (Exception e) {

@@ -47,7 +47,14 @@ public class Application extends Controller {
 		WebDownloader dwnl = new WebDownloader(url);
 		dwnl.defineSubDirectory(getNanoTime());
 		File dir = dwnl.download("tmp.html");
-		EbookConverter conv = new EbookConverter(dir.getAbsolutePath(), new ModsParser(metadataUrl));
+		EbookConverter conv;
+
+		if (metadataUrl != null) {
+		    conv = new EbookConverter(dir.getAbsolutePath(), new ModsParser(metadataUrl));
+		} else {
+		    conv = new EbookConverter(dir.getAbsolutePath());
+		}
+
 		DateFormat dfmt = new SimpleDateFormat("yyyyMMddhhmmss");
 		File result = conv.convert(dir + "/rauls.epub");
 		response().setHeader("Content-Disposition",
