@@ -24,9 +24,13 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter.Indenter;
+
 import nl.siegmann.epublib.domain.Author;
 import nl.siegmann.epublib.domain.Book;
 import nl.siegmann.epublib.domain.Date;
+import nl.siegmann.epublib.domain.Identifier;
+import play.Logger;
 
 /**
  * @author Raul Vasi
@@ -56,18 +60,23 @@ public class ModsParser {
      * @param book
      */
     public void insertAllMetas(Book book) {
-
 	addTitel(doc, book);
 	addAuthors(doc, book);
 	addDate(doc, book);
 	addSubject(doc, book);
+	addIdentifier(doc, book);
+    }
+
+    private void addIdentifier(Document doc2, Book book) {
+	String value = doc.select("identifier[type=uri]").text();
+	Identifier id = new Identifier("uri", value);
+	book.getMetadata().addIdentifier(id);
     }
 
     private void addSubject(Document doc, Book book) {
 	List<String> subjects = new ArrayList<String>();
 	subjects.add(doc.select("subject").text());
 	book.getMetadata().setSubjects(subjects);
-	System.out.println(book.getMetadata().getSubjects());
     }
 
     private void addDate(Document doc, Book book) {

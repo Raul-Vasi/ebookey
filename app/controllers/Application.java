@@ -23,7 +23,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import play.mvc.Controller;
+import play.Logger;
 import play.mvc.Result;
 
 /**
@@ -43,19 +43,25 @@ public class Application extends MyController {
      * @return File Objekt als epub
      */
     public Result index(String url, String metadataUrl) {
+	Logger.debug("ebookey starts");
 	try {
 	    if (url != null) {
-		if (!isWhitelisted(new URL(url).getHost()))
+		if (!isWhitelisted(new URL(url).getHost())) {
+		    Logger.error("Acces to <" + new URL(url).getHost() + "> is not allowed");
 		    return status(403, "ebookey is not allowed to access this url!");
+		}
 		WebDownloader dwnl = new WebDownloader(url);
+		Logger.info("Downloading " + url);
 		dwnl.defineSubDirectory(getNanoTime());
-		File dir = dwnl.download("tmp.html");
+		File dir = dwnl.download("index.html");
 		EbookConverter conv;
 
 		if (metadataUrl != null) {
 		    conv = new EbookConverter(dir.getAbsolutePath(), new ModsParser(metadataUrl));
+		    Logger.info("Convert with Metadatas from " + metadataUrl);
 		} else {
 		    conv = new EbookConverter(dir.getAbsolutePath());
+		    Logger.info("Convert whitout Metadatas");
 		}
 
 		DateFormat dfmt = new SimpleDateFormat("yyyyMMddhhmmss");
@@ -63,8 +69,9 @@ public class Application extends MyController {
 		response().setHeader("Content-Disposition",
 			"inline; filename=\"" + dfmt.format(new Date()) + "ebook.epub");
 		response().setHeader("Content-Type", "ebook/epub");
-
 		return ok(result);
+	    } else {
+		Logger.error(new URL(url).getHost() + " is not reachable");
 	    }
 	} catch (Exception e) {
 	    throw new RuntimeException(e);

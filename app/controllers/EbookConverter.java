@@ -140,7 +140,6 @@ public class EbookConverter {
 	try {
 	    File destination = new File(targetFile);
 	    createBook(new File(source));
-	    createToc();
 	    if (parser != null) {
 		parser.insertAllMetas(book);
 	    }
@@ -149,11 +148,6 @@ public class EbookConverter {
 	} catch (Exception e) {
 	    throw new RuntimeException(e);
 	}
-    }
-
-    private void createToc() {
-	System.out.println(book.getTitle());
-
     }
 
 }

@@ -34,6 +34,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import nl.siegmann.epublib.util.IOUtil;
+import play.Logger;
 import play.Play;
 
 /**
@@ -131,6 +132,8 @@ public class WebDownloader {
 	    }
 	} catch (Exception e) {
 	    throw new RuntimeException(e);
+	} finally {
+	    Logger.info("Cache for " + url + "on local: " + outputpath);
 	}
 
     }

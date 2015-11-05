@@ -113,16 +113,15 @@ public class TestEbookConverter {
     public void test_withoutModsMetadata() throws FileNotFoundException, IOException {
 	WebDownloader dwnl = new WebDownloader("https://www.jvrb.org/past-issues/11.2014/4075/fulltext/fedoraxml_body");
 	dwnl.defineSubDirectory(System.nanoTime());
-	File dir = dwnl.download("tmp.html");
+	File dir = dwnl.download("index.html");
 	System.out.println(dir.getAbsolutePath());
-	// dir.deleteOnExit();
+	dir.deleteOnExit();
 	EbookConverter conv = new EbookConverter(dir.getAbsolutePath());
 
 	File result = conv.convert(dir + "/rauls.epub");
-	// result.deleteOnExit();
+	result.deleteOnExit();
 	Assert.assertEquals(true, result.exists());
 	Assert.assertEquals(true, dir.exists());
-	System.out.println(result.toString());
     }
 
     @Test
@@ -145,6 +144,14 @@ public class TestEbookConverter {
     @Test
     public void testDownloader() throws IOException {
 	WebDownloader dwnl = new WebDownloader("https://www.jvrb.org/past-issues/11.2014/4075/fulltext/fedoraxml_body");
+	File dir = dwnl.download("tmp.html");
+	dir.deleteOnExit();
+    }
+
+    @Test
+    public void testDownloader2() throws IOException {
+	WebDownloader dwnl = new WebDownloader(
+		"https://alkyoneus.hbz-nrw.de/dev/jahrgang-2015/ausgabe-1/2295/metadata/xml");
 	File dir = dwnl.download("tmp.html");
 	dir.deleteOnExit();
     }
@@ -269,7 +276,6 @@ public class TestEbookConverter {
     @Test
     public void getMetasTest() {
 	String inputDirectory = Thread.currentThread().getContextClassLoader().getResource("epub").getPath();
-	System.out.println(inputDirectory);
 	EbookConverter conv = new EbookConverter(inputDirectory,
 		new ModsParser("https://alkyoneus.hbz-nrw.de/dev/jahrgang-2015/ausgabe-1/2295/metadata/xml"));
 
@@ -284,7 +290,6 @@ public class TestEbookConverter {
 	Element e = doc.select("head").first();
 	e.prepend("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />");
 	// doc.select("head").add(e);
-	System.out.println(doc.select("head"));
     }
 
 }
