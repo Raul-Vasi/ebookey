@@ -76,7 +76,7 @@ cd /tmp
 git clone https://github.com/Raul-Vasi/ebookey
 cd /tmp/ebookey
 /opt/activator-1.3.2-minimal/activator dist
-cp target/universal/ebookey-0.1.0-SNAPSHOT.zip  /tmp
+cp target/universal/ebookey-1.0-SNAPSHOT.zip  /tmp
 cd /tmp
 unzip ebookey-1.0-SNAPSHOT.zip
 cp /opt/ebookey/conf/application.conf /tmp/ebookey-1.0-SNAPSHOT/conf
