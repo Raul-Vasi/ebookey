@@ -20,7 +20,6 @@ public class IntegrationTest {
      * welcome page is being shown
      */
 
-    @SuppressWarnings("javadoc")
     @Test
     public void test_whitNotAllowedURL() {
 	running(testServer(3333, fakeApplication(inMemoryDatabase())), HTMLUNIT, new Callback<TestBrowser>() {

@@ -129,6 +129,24 @@ public class EbookConverter {
 
     // --------------------------------------------------------------------------------------------------------------------
     /**
+     * Das Cover Bild wird ins Book gesetzt.
+     * 
+     * @param cover_file
+     *            Dateiname samt Pfad als String
+     * 
+     */
+    public void setCover(String cover_file) {
+	try {
+	    if (!cover_file.isEmpty()) {
+		book.setCoverImage(new Resource(new FileInputStream(new File(cover_file)), cover_file));
+	    }
+	} catch (Exception e) {
+	    throw new RuntimeException(e);
+	}
+    }
+
+    // --------------------------------------------------------------------------------------------------------------------
+    /**
      * Konvertiert alle gesamelten Daten/META-Daten zu einem <i>epub</i>.
      * 
      * @param targetFile

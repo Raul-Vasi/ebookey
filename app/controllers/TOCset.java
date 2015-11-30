@@ -29,7 +29,6 @@ import org.jsoup.select.Elements;
 import nl.siegmann.epublib.domain.Book;
 import nl.siegmann.epublib.domain.MediaType;
 import nl.siegmann.epublib.domain.Resource;
-import play.Logger;
 
 /**
  * Table of Contents

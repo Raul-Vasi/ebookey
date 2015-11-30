@@ -4,8 +4,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Properties;
 
 import org.jsoup.Jsoup;
@@ -17,7 +15,6 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import controllers.EUtils;
 import controllers.EbookConverter;
 import controllers.ModsParser;
 import controllers.WebDownloader;

@@ -60,4 +60,21 @@ public class EUtils {
 
     }
 
+    /**
+     * Die Url-Adresse des Cover-Bildes wir ausgeparst und als String
+     * weitergegeben
+     * 
+     * @param url
+     * @return URL-Adresse als String
+     */
+    public static String getCoverUrl(String url) {
+	try {
+	    Document doc = Jsoup.connect(url).get();
+	    Elements cover = doc.select("a.cover");
+	    return cover.text();
+	} catch (Exception e) {
+	    throw new RuntimeException(e);
+	}
+    }
+
 }
