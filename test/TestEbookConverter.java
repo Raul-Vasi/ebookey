@@ -4,16 +4,20 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Properties;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import controllers.EUtils;
 import controllers.EbookConverter;
 import controllers.ModsParser;
 import controllers.WebDownloader;
@@ -290,6 +294,42 @@ public class TestEbookConverter {
 	Element e = doc.select("head").first();
 	e.prepend("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />");
 	// doc.select("head").add(e);
+    }
+
+    @Test
+    public void extractLinks_Test() {
+	try {
+	    String url = "https://alkyoneus.hbz-nrw.de/dev/jahrgang-2015/ausgabe-1/2295/ebookey";
+	    Document doc = Jsoup.connect(url).get();
+	    Elements e = doc.select("a");
+	    for (int i = 0; i < e.size(); i++) {
+		if (e.get(i).text().contains("http")) {
+		    if (e.get(i).text().contains("metadata")) {
+			System.out.println("Metas->-> " + e.get(i).text());
+		    } else {
+			System.out.println("Fulltext->-> " + e.get(i).text());
+		    }
+		} else {
+		    System.out.println("Nur epup: " + e.get(i).text());
+		}
+	    }
+	} catch (Exception e) {
+	    throw new RuntimeException(e);
+	}
+    }
+
+    @Test
+    public void extractLinks_Test1() {
+	try {
+	    String url = "https://alkyoneus.hbz-nrw.de/dev/jahrgang-2015/ausgabe-1/2295/ebookey";
+	    Document doc = Jsoup.connect(url).get();
+	    Elements article = doc.select("a.article");
+	    System.out.println(article.text());
+	    Elements metas = doc.select("a.metadata");
+	    System.out.println(metas.text());
+	} catch (Exception e) {
+	    throw new RuntimeException(e);
+	}
     }
 
 }
