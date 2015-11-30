@@ -21,6 +21,8 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
@@ -46,14 +48,40 @@ public class WebDownloader {
     String url = null;
     String outputpath = "/tmp/";
     Properties prop = new Properties();
+    String cover_file;
 
     /**
      * Konstruktor- Hier wird dir URL Adresse angenommen.
      * 
      * @param url
+     * @param coverUrl
      */
     public WebDownloader(String url) {
 	this.url = url;
+    }
+
+    /**
+     * @param coverUrl
+     */
+    public void downloadCover(String coverUrl) {
+	try {
+	    URL url = new URL(coverUrl);
+	    cover_file = outputpath + "ebookey_cover" + coverUrl.substring(coverUrl.lastIndexOf("."));
+	    try (InputStream is = url.openStream(); OutputStream os = new FileOutputStream(cover_file);) {
+
+		byte[] b = new byte[1024];
+		int length;
+
+		while ((length = is.read(b)) != -1) {
+		    os.write(b, 0, length);
+		}
+
+		is.close();
+		os.close();
+	    }
+	} catch (Exception e) {
+	    throw new RuntimeException(e);
+	}
     }
 
     /**

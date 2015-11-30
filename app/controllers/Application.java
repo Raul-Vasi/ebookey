@@ -37,31 +37,36 @@ public class Application extends MyController {
      * konvertiert und im HTML Header geschrieben.
      * 
      * @param url
-     *            die Abosolute URL
-     * @param metadataUrl
-     * 
+     *            Absolute URL
      * @return File Objekt als epub
      */
-    public Result index(String url, String metadataUrl) {
+    public Result index(String url) {
 	Logger.debug("ebookey starts");
 	try {
-	    if (url != null) {
+	    String articleUrl = EUtils.getArticleUrl(url);
+	    String metadataUrl = EUtils.getMetasUrl(url);
+	    String coverUrl = EUtils.getCoverUrl(url);
+	    if (articleUrl != null) {
 		if (!isWhitelisted(new URL(url).getHost())) {
 		    Logger.error("Acces to <" + new URL(url).getHost() + "> is not allowed");
 		    return status(403, "ebookey is not allowed to access this url!");
 		}
-		WebDownloader dwnl = new WebDownloader(url);
-		Logger.info("Downloading " + url);
+		WebDownloader dwnl = new WebDownloader(articleUrl);
+		Logger.info("Downloading " + articleUrl);
 		dwnl.defineSubDirectory(getNanoTime());
 		File dir = dwnl.download("index.html");
+		dwnl.downloadCover(coverUrl);
 		EbookConverter conv;
 
-		if (metadataUrl != null) {
-		    conv = new EbookConverter(dir.getAbsolutePath(), new ModsParser(metadataUrl));
-		    Logger.info("Convert with Metadatas from " + metadataUrl);
-		} else {
+		if (metadataUrl.isEmpty()) {
 		    conv = new EbookConverter(dir.getAbsolutePath());
+		    conv.setCover(dwnl.cover_file);
 		    Logger.info("Convert whitout Metadatas");
+
+		} else {
+		    conv = new EbookConverter(dir.getAbsolutePath(), new ModsParser(metadataUrl));
+		    conv.setCover(dwnl.cover_file);
+		    Logger.info("Convert with Metadatas from " + metadataUrl);
 		}
 
 		DateFormat dfmt = new SimpleDateFormat("yyyyMMddhhmmss");

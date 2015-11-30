@@ -24,13 +24,10 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import com.fasterxml.jackson.core.util.DefaultPrettyPrinter.Indenter;
-
 import nl.siegmann.epublib.domain.Author;
 import nl.siegmann.epublib.domain.Book;
 import nl.siegmann.epublib.domain.Date;
 import nl.siegmann.epublib.domain.Identifier;
-import play.Logger;
 
 /**
  * @author Raul Vasi
