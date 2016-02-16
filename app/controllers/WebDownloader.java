@@ -65,8 +65,11 @@ public class WebDownloader {
      */
     public void downloadCover(String coverUrl) {
 	try {
+	    String host = new String(new URL(url).getHost());
 	    URL url = new URL(coverUrl);
-	    cover_file = outputpath + "ebookey_cover" + coverUrl.substring(coverUrl.lastIndexOf("."));
+	    cover_file = outputpath + File.separator + host + File.separator + "ebookey_cover"
+		    + coverUrl.substring(coverUrl.lastIndexOf("."));
+	    Logger.info("Cover file: " + cover_file);
 	    try (InputStream is = url.openStream(); OutputStream os = new FileOutputStream(cover_file);) {
 
 		byte[] b = new byte[1024];

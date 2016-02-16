@@ -24,9 +24,11 @@ import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import akka.actor.dsl.Inbox.Get;
 import nl.siegmann.epublib.domain.Book;
 import nl.siegmann.epublib.domain.Resource;
 import nl.siegmann.epublib.epub.EpubWriter;
+import play.Logger;
 
 /**
  * Der <i>EbookConverter</i> konvertiert <code>HTML</code> Seiten in
@@ -114,7 +116,13 @@ public class EbookConverter {
 	try (InputStream input = new FileInputStream(file)) {
 	    Path base = Paths.get(source);
 	    String filePathName = base.relativize(Paths.get(file.getAbsolutePath())).toString();
-	    book.addResource(new Resource(input, filePathName));
+	    Logger.info("resource found -" + filePathName + "-");
+	    if (filePathName.contains("ebookey_cover.png")) {
+		Logger.info("** COVER **");
+		book.setCoverImage(new Resource(input, filePathName));
+	    } else {
+		book.addResource(new Resource(input, filePathName));
+	    }
 	} catch (Exception e) {
 	    throw new RuntimeException(e);
 	}
@@ -125,24 +133,6 @@ public class EbookConverter {
 	TOCset tocs = new TOCset();
 	tocs.insertTOCs(file, book);
 
-    }
-
-    // --------------------------------------------------------------------------------------------------------------------
-    /**
-     * Das Cover Bild wird ins Book gesetzt.
-     * 
-     * @param cover_file
-     *            Dateiname samt Pfad als String
-     * 
-     */
-    public void setCover(String cover_file) {
-	try {
-	    if (!cover_file.isEmpty()) {
-		book.setCoverImage(new Resource(new FileInputStream(new File(cover_file)), cover_file));
-	    }
-	} catch (Exception e) {
-	    throw new RuntimeException(e);
-	}
     }
 
     // --------------------------------------------------------------------------------------------------------------------
