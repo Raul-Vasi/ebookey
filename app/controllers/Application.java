@@ -43,9 +43,11 @@ public class Application extends MyController {
     public Result index(String url) {
 	Logger.debug("ebookey starts");
 	try {
+
 	    String articleUrl = EUtils.getArticleUrl(url);
 	    String metadataUrl = EUtils.getMetasUrl(url);
 	    String coverUrl = EUtils.getCoverUrl(url);
+
 	    if (articleUrl != null) {
 		if (!isWhitelisted(new URL(url).getHost())) {
 		    Logger.error("Acces to <" + new URL(url).getHost() + "> is not allowed");
@@ -60,12 +62,9 @@ public class Application extends MyController {
 
 		if (metadataUrl.isEmpty()) {
 		    conv = new EbookConverter(dir.getAbsolutePath());
-		    conv.setCover(dwnl.cover_file);
 		    Logger.info("Convert whitout Metadatas");
-
 		} else {
 		    conv = new EbookConverter(dir.getAbsolutePath(), new ModsParser(metadataUrl));
-		    conv.setCover(dwnl.cover_file);
 		    Logger.info("Convert with Metadatas from " + metadataUrl);
 		}
 
