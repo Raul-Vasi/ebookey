@@ -337,39 +337,4 @@ public class TestEbookConverter {
 	    throw new RuntimeException(e);
 	}
     }
-
-    @Test
-    public void zip_test() throws IOException {
-	String filename = Thread.currentThread().getContextClassLoader().getResource("epub/rauls.epub").getPath();
-	String entry = "OEBPS/content.opf";
-
-	ZipFile zip = new ZipFile(filename);
-	ZipEntry zentry = new ZipEntry(entry);
-	InputStream stream = zip.getInputStream(zentry);
-
-	String inputStreamString = new Scanner(stream, "UTF-8").useDelimiter("\\A").next();
-	// System.out.println(inputStreamString);
-
-	Document doc = Jsoup.parse(inputStreamString);
-	Element e = doc.getElementById("image_1");
-	// System.out.println(e);
-	e.attr("id", "cover");
-	inputStreamString = doc.toString();
-	// System.out.println(inputStreamString);
-
-	ByteArrayOutputStream baos = new ByteArrayOutputStream();
-	baos.write(inputStreamString.getBytes());
-	System.out.println(baos.toString());
-	byte[] buffer = new byte[stream.available()];
-	File targetFile = new File("/home/raul/workspace/ebookey/bin/epub/content.opf");
-	OutputStream outStream = new FileOutputStream(targetFile);
-	outStream.write(buffer);
-
-	ZipEntry ze = new ZipEntry("/home/raul/workspace/ebookey/bin/epub/content.opf");
-	ZipOutputStream zo = new ZipOutputStream(
-		new FileOutputStream("/home/raul/workspace/ebookey/bin/epub/rauls.epub"));
-	zo.putNextEntry(ze);
-
-    }
-
 }
