@@ -15,6 +15,10 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
+import org.htmlcleaner.CleanerProperties;
+import org.htmlcleaner.HtmlCleaner;
+import org.htmlcleaner.PrettyXmlSerializer;
+import org.htmlcleaner.TagNode;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -28,7 +32,9 @@ import controllers.EbookConverter;
 import controllers.ModsParser;
 import controllers.WebDownloader;
 import nl.siegmann.epublib.domain.Book;
+import nl.siegmann.epublib.domain.Resource;
 import nl.siegmann.epublib.epub.EpubReader;
+import nl.siegmann.epublib.epub.EpubWriter;
 import play.Play;
 import play.test.FakeApplication;
 import play.test.Helpers;
@@ -329,6 +335,7 @@ public class TestEbookConverter {
 	try {
 	    String url = "https://alkyoneus.hbz-nrw.de/dev/jahrgang-2015/ausgabe-1/2295/ebookey";
 	    Document doc = Jsoup.connect(url).get();
+	    System.out.println("Title: " + doc.title());
 	    Elements article = doc.select("a.article");
 	    System.out.println(article.text());
 	    Elements metas = doc.select("a.metadata");
@@ -336,5 +343,63 @@ public class TestEbookConverter {
 	} catch (Exception e) {
 	    throw new RuntimeException(e);
 	}
+    }
+
+    @Test
+    public void title_test() {
+	try {
+	    String url = "https://alkyoneus.hbz-nrw.de/dev/jahrgang-2015/ausgabe-1/2295/fulltext/fedoraxml_body";
+	    Document doc = Jsoup.connect(url).get();
+	    System.out.println(doc.select("h2").first().ownText());
+	} catch (IOException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	}
+    }
+
+    @Test
+    public void new_Test() {
+	try {
+	    Book book = new Book();
+	    String dir = "/home/raul/test/whatever/";
+	    InputStream in = new FileInputStream(new File(dir + "index.html"));
+	    Resource res = new Resource(in, "index.html");
+	    book.addResource(res);
+
+	    EpubWriter epubWriter = new EpubWriter();
+	    epubWriter.write(book, new FileOutputStream(dir + "test1_book1.epub"));
+	} catch (IOException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	}
+    }
+
+    @Test
+    public void html_cleaner_test() {
+	String filename = "/home/raul/test/alkyoneus.hbz-nrw.de/OEBPS/Ein Beispiel f├╝r einen DiPP Artikel.html";
+	System.out.println(filename);
+
+	CleanerProperties props = new CleanerProperties();
+	props.setTranslateSpecialEntities(true);
+	props.setTransResCharsToNCR(true);
+	props.setOmitComments(true);
+
+	TagNode tagNode;
+	try {
+	    tagNode = new HtmlCleaner(props).clean(new File(filename));
+
+	    new PrettyXmlSerializer(props).writeToFile(tagNode,
+		    "/home/raul/test/alkyoneus.hbz-nrw.de/OEBPS/chinadaily.xml", "utf-8");
+
+	} catch (MalformedURLException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	} catch (IOException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	}
+
+	// serialize to xml file
+
     }
 }

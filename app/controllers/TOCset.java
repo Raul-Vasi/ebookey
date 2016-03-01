@@ -60,6 +60,7 @@ public class TOCset {
 	    Document doc = Jsoup.parse(file, "UTF-8");
 	    Elements titles = doc.select("h2");
 	    titel = titles.get(0).text();
+	    unicodingTile(titel);
 	    book.getMetadata().addTitle(titel);
 	    book.addSection(titel, new Resource(in, titel + ".html"));
 
@@ -68,13 +69,18 @@ public class TOCset {
 		String chapter = t.text();
 		String currentId = titles.get(i).select("a[id]").attr("id").toString();
 		Resource r = new Resource(titel + ".html" + "#" + currentId);
-		r.setMediaType(new MediaType("html", "application/xhtml+xml"));
+		r.setMediaType(new MediaType("application/xhtml+xml", "html"));
 		book.addSection(chapter, r);
 	    }
 
 	} catch (Exception e) {
 	    throw new RuntimeException(e);
 	}
+    }
+
+    private String unicodingTile(String titel1) {
+	titel = titel.replaceAll("[_[^\\w\\ ] ]", "");
+	return titel;
     }
 
 }

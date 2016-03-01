@@ -16,7 +16,8 @@ libraryDependencies ++= Seq(
   "org.jsoup" % "jsoup" % "1.8.3",
   "org.slf4j" % "slf4j-api"       % "1.7.7",
   "org.slf4j" % "jcl-over-slf4j"  % "1.7.7"	,
-  "nl.siegmann.epublib" % "epublib-core" % "3.1"
+  "nl.siegmann.epublib" % "epublib-core" % "3.1",
+  "net.sourceforge.htmlcleaner" % "htmlcleaner" % "2.6.1"
 ).map(_.force())
 
 //libraryDependencies ~= { _.map(_.exclude("org.slf4j", "slf4j-jdk14")) }

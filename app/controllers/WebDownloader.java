@@ -30,9 +30,14 @@ import java.nio.file.Paths;
 import java.util.Properties;
 
 import org.jsoup.Connection.Response;
+import org.htmlcleaner.CleanerProperties;
+import org.htmlcleaner.HtmlCleaner;
+import org.htmlcleaner.PrettyXmlSerializer;
+import org.htmlcleaner.TagNode;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 
 import nl.siegmann.epublib.util.IOUtil;
@@ -101,11 +106,20 @@ public class WebDownloader {
 
 	try {
 	    readprop();
+
+	    CleanerProperties props = new CleanerProperties();
+	    props.setTranslateSpecialEntities(true);
+	    props.setTransResCharsToNCR(true);
+	    props.setOmitComments(true);
+
 	    String downloadLocation = createDownloadLocation(outputpath);
 	    Document doc = Jsoup.parse(new URL(url).openStream(), "UTF-8", url);
+	    doc.getElementsByTag("html").first().attr("xmlns", "http://www.w3.org/1999/xhtml").attr("xml:lang", "en");
 	    addEncoding(doc);
+	    doc.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
 	    Elements img = doc.getElementsByTag("img");
 	    try (ByteArrayInputStream bs = new ByteArrayInputStream(doc.outerHtml().getBytes("UTF-8"))) {
+		Logger.info("Filename: " + filename);
 		if (filename.endsWith(".html")) {
 		    IOUtil.copy(bs, new FileOutputStream(new File(downloadLocation + File.separator + filename)));
 		} else {
@@ -113,6 +127,10 @@ public class WebDownloader {
 			    new FileOutputStream(new File(downloadLocation + File.separator + filename + ".html")));
 		}
 
+		TagNode tagNode = new HtmlCleaner(props).clean(new File(downloadLocation + File.separator + filename));
+
+		new PrettyXmlSerializer(props).writeToFile(tagNode, downloadLocation + File.separator + filename,
+			"utf-8");
 		for (Element element : img) {
 		    String src = element.absUrl("src");
 		    Response resultImageResponse = Jsoup.connect(src).ignoreContentType(true).execute();
@@ -138,7 +156,10 @@ public class WebDownloader {
 
     private Document addEncoding(Document doc) {
 	Element e = doc.select("head").first();
-	e.prepend("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />");
+	Node n = doc.createElement("meta");
+	n.attr("http-equiv", "Content-Type");
+	n.attr("content", "text/html; charset=utf-8");
+	e.prepend("<title>" + doc.select("h2").first().ownText() + "</title>");
 	return doc;
 
     }
