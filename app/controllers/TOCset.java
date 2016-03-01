@@ -60,8 +60,8 @@ public class TOCset {
 	    Document doc = Jsoup.parse(file, "UTF-8");
 	    Elements titles = doc.select("h2");
 	    titel = titles.get(0).text();
-	    unicodingTile(titel);
 	    book.getMetadata().addTitle(titel);
+	    unicodingTile(titel);
 	    book.addSection(titel, new Resource(in, titel + ".html"));
 
 	    for (int i = 1; i < titles.size(); i++) {
