@@ -161,14 +161,6 @@ public class TestEbookConverter {
     }
 
     @Test
-    public void testDownloader2() throws IOException {
-	WebDownloader dwnl = new WebDownloader(
-		"https://alkyoneus.hbz-nrw.de/dev/jahrgang-2015/ausgabe-1/2295/metadata/xml");
-	File dir = dwnl.download("tmp.html");
-	dir.deleteOnExit();
-    }
-
-    @Test
     public void confTest() throws IOException {
 	Properties properties = new Properties();
 	properties.load(Play.application().resourceAsStream("config.properties"));
