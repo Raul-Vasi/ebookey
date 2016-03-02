@@ -107,11 +107,6 @@ public class WebDownloader {
 	try {
 	    readprop();
 
-	    CleanerProperties props = new CleanerProperties();
-	    props.setTranslateSpecialEntities(true);
-	    props.setTransResCharsToNCR(true);
-	    props.setOmitComments(true);
-
 	    String downloadLocation = createDownloadLocation(outputpath);
 	    Document doc = Jsoup.parse(new URL(url).openStream(), "UTF-8", url);
 	    doc.getElementsByTag("html").first().attr("xmlns", "http://www.w3.org/1999/xhtml").attr("xml:lang", "en");
@@ -126,11 +121,8 @@ public class WebDownloader {
 		    IOUtil.copy(bs,
 			    new FileOutputStream(new File(downloadLocation + File.separator + filename + ".html")));
 		}
+		xmlPretteyPrint(downloadLocation, filename);
 
-		TagNode tagNode = new HtmlCleaner(props).clean(new File(downloadLocation + File.separator + filename));
-
-		new PrettyXmlSerializer(props).writeToFile(tagNode, downloadLocation + File.separator + filename,
-			"utf-8");
 		for (Element element : img) {
 		    String src = element.absUrl("src");
 		    Response resultImageResponse = Jsoup.connect(src).ignoreContentType(true).execute();
@@ -162,6 +154,20 @@ public class WebDownloader {
 	e.prepend("<title>" + doc.select("h2").first().ownText() + "</title>");
 	return doc;
 
+    }
+
+    private void xmlPretteyPrint(String downloadLocation, String filename) {
+
+	try {
+	    CleanerProperties props = new CleanerProperties();
+	    props.setTranslateSpecialEntities(true);
+	    props.setTransResCharsToNCR(true);
+	    props.setOmitComments(true);
+	    TagNode tagNode = new HtmlCleaner(props).clean(new File(downloadLocation + File.separator + filename));
+	    new PrettyXmlSerializer(props).writeToFile(tagNode, downloadLocation + File.separator + filename, "utf-8");
+	} catch (Exception e) {
+	    throw new RuntimeException(e);
+	}
     }
 
     private void saveAsFile(Response resultImageResponse, File file) {

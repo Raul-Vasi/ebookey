@@ -23,13 +23,6 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
-import org.htmlcleaner.CleanerProperties;
-import org.htmlcleaner.HtmlCleaner;
-import org.htmlcleaner.PrettyXmlSerializer;
-import org.htmlcleaner.TagNode;
-
-import akka.actor.dsl.Inbox.Get;
 import nl.siegmann.epublib.domain.Book;
 import nl.siegmann.epublib.domain.Resource;
 import nl.siegmann.epublib.epub.EpubWriter;

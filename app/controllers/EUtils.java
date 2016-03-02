@@ -27,19 +27,6 @@ import org.jsoup.select.Elements;
  */
 public class EUtils {
 
-    public static EbookeyLinks getLinks(String url) {
-	try {
-	    EbookeyLinks links = new EbookeyLinks();
-	    Document doc = Jsoup.connect(url).get();
-	    links.article = doc.select("a.article").text();
-	    links.metadata = doc.select("a.metadata").text();
-	    links.cover = doc.select("a.cover").text();
-	    return links;
-	} catch (Exception e) {
-	    throw new RuntimeException(e);
-	}
-    }
-
     /**
      * Die Url-Adresse des Artikels wir ausgeparst und als String weitergegeben
      * 

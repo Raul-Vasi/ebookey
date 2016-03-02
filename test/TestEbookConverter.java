@@ -1,19 +1,15 @@
-import java.io.ByteArrayOutputStream;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
+
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Enumeration;
+
 import java.util.Properties;
-import java.util.Scanner;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
-import java.util.zip.ZipOutputStream;
 
 import org.htmlcleaner.CleanerProperties;
 import org.htmlcleaner.HtmlCleaner;
@@ -358,48 +354,24 @@ public class TestEbookConverter {
     }
 
     @Test
-    public void new_Test() {
-	try {
-	    Book book = new Book();
-	    String dir = "/home/raul/test/whatever/";
-	    InputStream in = new FileInputStream(new File(dir + "index.html"));
-	    Resource res = new Resource(in, "index.html");
-	    book.addResource(res);
-
-	    EpubWriter epubWriter = new EpubWriter();
-	    epubWriter.write(book, new FileOutputStream(dir + "test1_book1.epub"));
-	} catch (IOException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
-	}
-    }
-
-    @Test
     public void html_cleaner_test() {
-	String filename = "/home/raul/test/alkyoneus.hbz-nrw.de/OEBPS/Ein Beispiel f├╝r einen DiPP Artikel.html";
+	String filename = Thread.currentThread().getContextClassLoader().getResource("epub/fedoraxml_body.html")
+		.getPath();
 	System.out.println(filename);
-
+	System.out.println(filename.replaceAll(".html", ".xml"));
 	CleanerProperties props = new CleanerProperties();
 	props.setTranslateSpecialEntities(true);
 	props.setTransResCharsToNCR(true);
 	props.setOmitComments(true);
-
 	TagNode tagNode;
 	try {
 	    tagNode = new HtmlCleaner(props).clean(new File(filename));
-
-	    new PrettyXmlSerializer(props).writeToFile(tagNode,
-		    "/home/raul/test/alkyoneus.hbz-nrw.de/OEBPS/chinadaily.xml", "utf-8");
-
+	    new PrettyXmlSerializer(props).writeToFile(tagNode, filename.replaceAll(".html", ".xml"), "utf-8");
 	} catch (MalformedURLException e) {
-	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	} catch (IOException e) {
-	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	}
-
-	// serialize to xml file
 
     }
 }
