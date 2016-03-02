@@ -1,6 +1,6 @@
+!https://raw.github.com/Raul-Vasi/ebookey/master/img/Primary_logo.png!
 !https://travis-ci.org/Raul-Vasi/ebookey.svg?branch=master!:https://travis-ci.org/Raul-Vasi/ebookey
 
-h1. ebookey
 
 A HTML to ebook converter as web service.
 
